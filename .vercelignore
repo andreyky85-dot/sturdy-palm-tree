@@ -1,0 +1,10 @@
+# Не загружать на Vercel
+.env
+.env.local
+.env.*.local
+node_modules
+.next
+*.db
+*.db-journal
+.DS_Store
+*.log
