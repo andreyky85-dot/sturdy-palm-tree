@@ -1,11 +1,9 @@
 import OpenAI from "openai";
 
 const apiKey = process.env.OPENAI_API_KEY;
-if (!apiKey) {
-  throw new Error("OPENAI_API_KEY is not set");
-}
 
-export const openai = new OpenAI({ apiKey });
+// Если ключ не задан, не падаем на этапе билда, а вернём ошибку при вызове API
+export const openai = apiKey ? new OpenAI({ apiKey }) : null;
 
 export type GenerateResult = {
   twitter_posts: string[];
@@ -24,6 +22,10 @@ const SYSTEM_PROMPT = `Ты — эксперт по контенту для со
 {"twitter_posts":["...","...", ...10 штук], "linkedin_posts":["...", ...5], "tiktok_ideas":["...", ...3], "blog_summary":"..."}`;
 
 export async function generateContentFromTranscript(transcript: string): Promise<GenerateResult> {
+  if (!openai) {
+    throw new Error("OPENAI_API_KEY is not configured on the server.");
+  }
+
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
