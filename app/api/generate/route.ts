@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { z } from "zod";
-import { authOptions } from "@/lib/auth";
 import { fetchTranscript } from "@/lib/transcript";
 import { generateContentFromTranscript } from "@/lib/openai";
-import { checkUsage, incrementUsage } from "@/lib/usage";
 import { getClientIp, checkRateLimit } from "@/lib/ratelimit";
 
 const MIN_TRANSCRIPT_LENGTH = 50;
@@ -24,24 +21,6 @@ const bodySchema = z.object({
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const userId = (session.user as { id?: string }).id;
-    if (!userId) {
-      return NextResponse.json({ error: "User id missing" }, { status: 401 });
-    }
-
-    const { allowed, used, limit } = await checkUsage(userId);
-    if (!allowed) {
-      return NextResponse.json(
-        { error: "Monthly limit reached", used, limit },
-        { status: 429 }
-      );
-    }
-
     const ip = getClientIp(req);
     const rateLimitResult = await checkRateLimit(ip);
     if (!rateLimitResult.allowed) {
@@ -91,8 +70,6 @@ export async function POST(req: Request) {
     }
 
     const result = await generateContentFromTranscript(transcript);
-    await incrementUsage(userId);
-
     return NextResponse.json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Generation failed";

@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -17,15 +16,6 @@ export default function GeneratorPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerateResult | null>(null);
-  const [isSignedIn, setIsSignedIn] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    fetch("/api/me")
-      .then((r) => {
-        setIsSignedIn(r.ok);
-      })
-      .catch(() => setIsSignedIn(false));
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,19 +72,6 @@ export default function GeneratorPage() {
         <p className="mt-1 text-slate-600">
           Paste a YouTube URL or paste a transcript (e.g. TikTok, podcast, any text). We’ll pull the transcript and generate posts.
         </p>
-        {isSignedIn === false && (
-          <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-4 text-slate-800">
-            <p className="font-medium">Sign in to generate</p>
-            <p className="mt-1 text-sm text-slate-600">
-              Free plan: 5 generations per month. Sign in with Google to start.
-            </p>
-            <Link href="/login" className="mt-3 inline-block">
-              <Button size="md">Sign in with Google</Button>
-            </Link>
-          </div>
-        )}
-        {isSignedIn === true && (
-        <>
         <div className="mt-6 flex gap-2 border-b border-slate-200">
           <button
             type="button"
@@ -153,11 +130,6 @@ export default function GeneratorPage() {
             <h2 className="mb-6 text-lg font-semibold text-slate-900">Results</h2>
             <ResultsCards data={result} />
           </div>
-        )}
-        </>
-        )}
-        {isSignedIn === null && (
-          <div className="mt-8 h-10 w-48 animate-pulse rounded-lg bg-slate-100" />
         )}
       </main>
     </>
