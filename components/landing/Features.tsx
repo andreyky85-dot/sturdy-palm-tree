@@ -1,39 +1,36 @@
 import { Card } from "@/components/ui/Card";
 import { Layers, Zap, Share2, Clock, BarChart3 } from "lucide-react";
 
-/**
- * Five key features for SEO and conversion. Clear value props.
- */
 const items = [
   {
     icon: Layers,
-    title: "One input, four outputs",
+    title: "Один текст — несколько форматов",
     description:
-      "One video URL gives you 10 Twitter posts, 5 LinkedIn posts, 3 TikTok video ideas, and one blog summary. No manual rewriting.",
+      "Вы работаете с исходным текстом, а сервис предлагает идеи коротких постов, развёрнутых материалов, кратких конспектов и сценариев для коротких видео.",
   },
   {
     icon: Zap,
-    title: "AI-optimized for each platform",
+    title: "Фокус на ясности и структуре",
     description:
-      "GPT tailors tone, length, and hooks for Twitter, LinkedIn, and TikTok so your message fits each audience.",
+      "Подсказки построены вокруг простой логики: контекст → пример → вывод. Это помогает быстро превратить черновик в понятный и пригодный для публикации материал.",
   },
   {
     icon: Share2,
-    title: "Copy and publish in one click",
+    title: "Готово к использованию",
     description:
-      "Every block has a copy button. Paste into Buffer, Hootsuite, or publish directly — no export hassle.",
+      "Каждый блок можно скопировать в один клик и сразу использовать в соцсетях, рассылке или любом другом канале.",
   },
   {
     icon: Clock,
-    title: "Save hours every week",
+    title: "Экономия времени команды",
     description:
-      "Stop repurposing by hand. What used to take an hour now takes under a minute.",
+      "Часть работы по структурированию текста и поиску формулировок берёт на себя сервис, высвобождая время на экспертизу и стратегию.",
   },
   {
     icon: BarChart3,
-    title: "Built for creators and marketers",
+    title: "Подходит авторам и бизнесу",
     description:
-      "Whether you’re a solo creator or a marketing team, scale your content without scaling headcount.",
+      "Инструмент полезен как для личных проектов, так и для компаний, которые регулярно готовят экспертный контент.",
   },
 ];
 
@@ -42,10 +39,10 @@ export function Features() {
     <section className="px-4 py-20" id="features">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl font-bold text-slate-900 sm:text-4xl">
-          Built for content creators who ship
+          Чем помогает TextFlow
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-slate-600">
-          Stop rewriting the same idea for every platform. One link in, 19+ pieces of content out.
+          Сервис не заменяет экспертизу, а упрощает путь от черновика до готовых форматов контента.
         </p>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.slice(0, 3).map(({ icon: Icon, title, description }) => (
