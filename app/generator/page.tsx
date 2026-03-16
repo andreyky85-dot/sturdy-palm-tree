@@ -1,16 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { ResultsCards } from "@/components/generator/ResultsCards";
 import type { GenerateResult } from "@/components/generator/ResultsCards";
+
+type HistoryItem = {
+  id: string;
+  input: string;
+  createdAt: string;
+  result: GenerateResult;
+};
+
+const HISTORY_KEY = "textflow_history_v1";
+const HISTORY_LIMIT = 5;
 
 export default function GeneratorPage() {
   const [transcript, setTranscript] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerateResult | null>(null);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(HISTORY_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as HistoryItem[];
+      if (Array.isArray(parsed)) {
+        setHistory(parsed);
+      }
+    } catch {
+      // ignore parse errors
+    }
+  }, []);
+
+  const saveHistory = (input: string, res: GenerateResult) => {
+    const item: HistoryItem = {
+      id: String(Date.now()),
+      input,
+      createdAt: new Date().toISOString(),
+      result: res,
+    };
+    const next = [item, ...history].slice(0, HISTORY_LIMIT);
+    setHistory(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,10 +82,26 @@ export default function GeneratorPage() {
         return;
       }
       setResult(data);
+      saveHistory(transcript.trim(), data);
     } catch {
       setError("Network error. Try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLoadFromHistory = (item: HistoryItem) => {
+    setTranscript(item.input);
+    setResult(item.result);
+    setError(null);
+  };
+
+  const formatDate = (iso: string) => {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleString();
+    } catch {
+      return iso;
     }
   };
 
@@ -88,11 +143,37 @@ export default function GeneratorPage() {
           </div>
         )}
       </Card>
+
       {result && (
         <div className="mt-10">
           <h2 className="mb-6 text-lg font-semibold text-slate-900">Результаты</h2>
           <ResultsCards data={result} />
         </div>
+      )}
+
+      {history.length > 0 && (
+        <section className="mt-12">
+          <h2 className="mb-4 text-lg font-semibold text-slate-900">Недавние генерации</h2>
+          <div className="space-y-3">
+            {history.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleLoadFromHistory(item)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-left hover:bg-slate-50"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm text-slate-800 line-clamp-2">
+                    {item.input}
+                  </p>
+                  <span className="whitespace-nowrap text-xs text-slate-500">
+                    {formatDate(item.createdAt)}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
       )}
     </main>
   );
