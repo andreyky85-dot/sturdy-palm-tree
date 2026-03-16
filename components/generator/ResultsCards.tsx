@@ -9,6 +9,8 @@ export type GenerateResult = {
   twitter_posts: string[];
   linkedin_posts: string[];
   tiktok_ideas: string[];
+  telegram_posts: string[];
+  titles: string[];
   blog_summary: string;
 };
 
@@ -71,6 +73,26 @@ export function ResultsCards({ data }: { data: GenerateResult }) {
         <div className="space-y-3">
           {data.tiktok_ideas.map((idea, i) => (
             <Block key={i} label={`Idea ${i + 1}`} text={idea} />
+          ))}
+        </div>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Telegram‑посты (3)</CardTitle>
+        </CardHeader>
+        <div className="space-y-3">
+          {data.telegram_posts.map((post, i) => (
+            <Block key={i} label={`Пост ${i + 1}`} text={post} />
+          ))}
+        </div>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Заголовки (5)</CardTitle>
+        </CardHeader>
+        <div className="space-y-3">
+          {data.titles.map((title, i) => (
+            <Block key={i} label={`Вариант ${i + 1}`} text={title} />
           ))}
         </div>
       </Card>
