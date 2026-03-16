@@ -48,7 +48,7 @@ export function ResultsCards({ data }: { data: GenerateResult }) {
     <div className="grid gap-8 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Twitter posts (10)</CardTitle>
+          <CardTitle>Twitter посты (10)</CardTitle>
         </CardHeader>
         <div className="space-y-3">
           {data.twitter_posts.map((post, i) => (
@@ -58,7 +58,7 @@ export function ResultsCards({ data }: { data: GenerateResult }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>LinkedIn posts (5)</CardTitle>
+          <CardTitle>LinkedIn посты (5)</CardTitle>
         </CardHeader>
         <div className="space-y-3">
           {data.linkedin_posts.map((post, i) => (
@@ -68,7 +68,7 @@ export function ResultsCards({ data }: { data: GenerateResult }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>TikTok ideas (3)</CardTitle>
+          <CardTitle>TikTok идеи (3)</CardTitle>
         </CardHeader>
         <div className="space-y-3">
           {data.tiktok_ideas.map((idea, i) => (
