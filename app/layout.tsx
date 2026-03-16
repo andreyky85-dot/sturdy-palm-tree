@@ -7,49 +7,46 @@ const inter = Inter({
   variable: "--font-geist-sans",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://contentmultiplier.app";
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://textflow.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Content Multiplier — Turn 1 Video Into 19+ Social Posts in Seconds",
-    template: "%s | Content Multiplier",
+    default: "TextFlow — идеи постов из любого текста",
+    template: "%s | TextFlow",
   },
   description:
-    "AI-powered tool that turns one YouTube or TikTok video into 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. Free tier available. Built for creators and marketers.",
+    "TextFlow превращает любой текст в идеи для постов, коротких видео и блога. Вставьте текст — получите готовые форматы для соцсетей.",
   keywords: [
-    "content repurposing",
-    "YouTube to social media",
-    "TikTok to Twitter",
-    "AI content generator",
-    "social media automation",
-    "video to blog",
-    "content multiplier",
-    "repurpose video",
+    "генератор постов",
+    "идея для поста",
+    "контент для соцсетей",
+    "ai генератор текста",
+    "textflow",
   ],
-  authors: [{ name: "Content Multiplier" }],
-  creator: "Content Multiplier",
+  authors: [{ name: "TextFlow" }],
+  creator: "TextFlow",
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "ru_RU",
     url: siteUrl,
-    siteName: "Content Multiplier",
-    title: "Content Multiplier — Turn 1 Video Into 19+ Social Posts in Seconds",
+    siteName: "TextFlow",
+    title: "TextFlow — идеи постов из любого текста",
     description:
-      "Paste a video link. Get 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. AI-powered, one click.",
+      "Вставьте текст и получите идеи для постов, коротких видео и блога. Без лишних настроек.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Content Multiplier — One video, many posts",
+        alt: "TextFlow — идеи постов из любого текста",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Content Multiplier — Turn 1 Video Into 19+ Social Posts",
-    description: "AI repurposes your video into Twitter, LinkedIn, TikTok & blog content. Free tier.",
+    title: "TextFlow — идеи постов из любого текста",
+    description: "AI превращает ваш текст в контент для соцсетей и блога.",
     images: ["/og.png"],
   },
   robots: {

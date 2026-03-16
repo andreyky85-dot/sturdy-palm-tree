@@ -10,24 +10,24 @@ export async function Header() {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="text-xl font-semibold text-slate-900">
-          Content Multiplier
+          TextFlow
         </Link>
         <nav className="flex items-center gap-4">
           {session ? (
             <>
               <Link href="/generator">
                 <Button variant="ghost" size="sm">
-                  Generator
+                  Генератор
                 </Button>
               </Link>
               <Link href="/dashboard">
                 <Button variant="ghost" size="sm">
-                  Dashboard
+                  Кабинет
                 </Button>
               </Link>
               <Link href="/api/auth/signout">
                 <Button variant="secondary" size="sm">
-                  Sign out
+                  Выйти
                 </Button>
               </Link>
             </>
@@ -35,12 +35,12 @@ export async function Header() {
             <>
               <Link href="/generator">
                 <Button variant="ghost" size="sm">
-                  Generator
+                  Генератор
                 </Button>
               </Link>
               <Link href="/login">
                 <Button variant="primary" size="sm">
-                  Sign in with Google
+                  Войти через Google
                 </Button>
               </Link>
             </>
