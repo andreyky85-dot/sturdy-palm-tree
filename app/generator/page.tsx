@@ -16,11 +16,11 @@ export default function GeneratorPage() {
     setError(null);
     setResult(null);
     if (!transcript.trim()) {
-      setError("Paste the transcript text");
+      setError("Вставьте текст, с которым нужно работать");
       return;
     }
     if (transcript.trim().length < 50) {
-      setError("Transcript must be at least 50 characters");
+      setError("Текст должен быть не короче 50 символов");
       return;
     }
     setLoading(true);
@@ -51,23 +51,23 @@ export default function GeneratorPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-12">
-        <h1 className="text-2xl font-bold text-slate-900">Generate content</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Сгенерировать идеи из текста</h1>
         <p className="mt-1 text-slate-600">
-          Paste a transcript (e.g. TikTok, podcast, any text). We’ll generate posts for different platforms.
+          Вставьте любой текст (идею, конспект, отрывок статьи), а мы предложим варианты постов для разных площадок.
         </p>
         <form onSubmit={handleSubmit} className="mt-8">
             <div className="flex flex-col gap-3">
               <textarea
-                placeholder="Paste your transcript here (e.g. from TikTok subtitles, a podcast, or any video text)..."
+                placeholder="Вставьте сюда текст, с которым хотите поработать..."
                 value={transcript}
                 onChange={(e) => setTranscript(e.target.value)}
                 disabled={loading}
                 rows={8}
                 className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
               />
-              <p className="text-xs text-slate-500">Minimum 50 characters. Max 35,000.</p>
+              <p className="text-xs text-slate-500">Минимум 50 символов, максимум 35 000.</p>
               <Button type="submit" loading={loading} size="lg">
-                Generate
+                Сгенерировать
               </Button>
             </div>
         </form>
@@ -78,7 +78,7 @@ export default function GeneratorPage() {
         )}
         {result && (
           <div className="mt-10">
-            <h2 className="mb-6 text-lg font-semibold text-slate-900">Results</h2>
+            <h2 className="mb-6 text-lg font-semibold text-slate-900">Результаты</h2>
             <ResultsCards data={result} />
           </div>
         )}
