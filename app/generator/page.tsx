@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { ResultsCards } from "@/components/generator/ResultsCards";
 import type { GenerateResult } from "@/components/generator/ResultsCards";
 
@@ -51,37 +52,48 @@ export default function GeneratorPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-12">
-        <h1 className="text-2xl font-bold text-slate-900">Сгенерировать идеи из текста</h1>
-        <p className="mt-1 text-slate-600">
+      <Card>
+        <CardHeader>
+          <CardTitle>Сгенерировать идеи из текста</CardTitle>
+        </CardHeader>
+        <p className="text-sm text-slate-600">
           Вставьте любой текст (идею, конспект, отрывок статьи), а мы предложим варианты постов для разных площадок.
         </p>
-        <form onSubmit={handleSubmit} className="mt-8">
-            <div className="flex flex-col gap-3">
-              <textarea
-                placeholder="Вставьте сюда текст, с которым хотите поработать..."
-                value={transcript}
-                onChange={(e) => setTranscript(e.target.value)}
-                disabled={loading}
-                rows={8}
-                className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
-              />
-              <p className="text-xs text-slate-500">Минимум 50 символов, максимум 35 000.</p>
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="flex flex-col gap-3">
+            <textarea
+              placeholder="Вставьте сюда текст, с которым хотите поработать..."
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+              disabled={loading}
+              rows={8}
+              className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+            />
+            <p className="text-xs text-slate-500">Минимум 50 символов, максимум 35 000.</p>
+            <div className="flex items-center gap-3">
               <Button type="submit" loading={loading} size="lg">
                 Сгенерировать
               </Button>
+              {loading && (
+                <span className="text-xs text-slate-500">
+                  Идёт генерация…
+                </span>
+              )}
             </div>
+          </div>
         </form>
         {error && (
           <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
             {error}
           </div>
         )}
-        {result && (
-          <div className="mt-10">
-            <h2 className="mb-6 text-lg font-semibold text-slate-900">Результаты</h2>
-            <ResultsCards data={result} />
-          </div>
-        )}
-      </main>
+      </Card>
+      {result && (
+        <div className="mt-10">
+          <h2 className="mb-6 text-lg font-semibold text-slate-900">Результаты</h2>
+          <ResultsCards data={result} />
+        </div>
+      )}
+    </main>
   );
 }
