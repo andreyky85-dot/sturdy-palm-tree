@@ -18,6 +18,9 @@ export function Footer() {
             <Link href="/terms" className="hover:text-slate-900">
               Условия
             </Link>
+            <Link href="mailto:andreyky85@gmail.com" className="hover:text-slate-900">
+              Обратная связь
+            </Link>
           </div>
           <p className="text-sm text-slate-500">
             © {new Date().getFullYear()} TextFlow. Все права защищены.
