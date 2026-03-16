@@ -98,7 +98,7 @@ export function ResultsCards({ data }: { data: GenerateResult }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Blog summary</CardTitle>
+          <CardTitle>Краткий конспект</CardTitle>
         </CardHeader>
         <Block label="Summary" text={data.blog_summary} />
       </Card>
