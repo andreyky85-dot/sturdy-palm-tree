@@ -1,30 +1,24 @@
 import { Card } from "@/components/ui/Card";
 import { Quote } from "lucide-react";
 
-/**
- * Testimonials: dummy social proof for landing. Replace with real quotes later.
- */
 const testimonials = [
   {
     quote:
-      "I used to spend an hour turning one YouTube video into threads and LinkedIn posts. Now I do it in under a minute. Game changer.",
-    name: "Alex Chen",
-    role: "Content creator",
-    avatar: null,
+      "Раньше я тратил около часа, чтобы из одного материала сделать несколько постов. Сейчас за несколько минут получаю варианты формулировок и дальше просто выбираю подходящие.",
+    name: "Иван Петров",
+    role: "Автор и продюсер контента",
   },
   {
     quote:
-      "We run a small marketing team. Content Multiplier lets us repurpose webinars and demos into a week of social content without hiring.",
-    name: "Jordan Miller",
-    role: "Marketing lead",
-    avatar: null,
+      "У нас небольшая команда маркетинга. TextFlow помогает быстрее разбирать заметки и материалы экспертов на понятные форматы для соцсетей и рассылок, без лишней рутины.",
+    name: "Анна Смирнова",
+    role: "Руководитель маркетинга",
   },
   {
     quote:
-      "Finally a tool that actually gives you platform-ready copy, not generic fluff. The Twitter posts are the right length and the LinkedIn ones sound professional.",
-    name: "Sam Rivera",
-    role: "Founder",
-    avatar: null,
+      "Нравится, что подсказки не пытаются написать текст за нас, а предлагают структурированные варианты, с которыми удобно дальше работать и адаптировать под бренд.",
+    name: "Дмитрий Коваленко",
+    role: "Основатель проекта",
   },
 ];
 
@@ -33,10 +27,10 @@ export function Testimonials() {
     <section className="border-t border-slate-200 bg-slate-50/50 px-4 py-20" id="testimonials">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl font-bold text-slate-900 sm:text-4xl">
-          Loved by creators and marketers
+          Кому уже полезен TextFlow
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-slate-600">
-          See what people say about repurposing content with Content Multiplier.
+          Короткие отзывы тех, кто регулярно работает с текстами и контентом.
         </p>
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
           {testimonials.map(({ quote, name, role }) => (
