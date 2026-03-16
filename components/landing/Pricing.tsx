@@ -3,38 +3,35 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Check } from "lucide-react";
 
-/**
- * Pricing: Free (5 generations) and Pro ($19/mo unlimited). Marketing-ready copy.
- */
 const plans = [
   {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    description: "Try the full product. No credit card required.",
+    name: "Базовый",
+    price: "0 ₽",
+    period: "в месяц",
+    description: "Познакомьтесь с сервисом без рисков и платежей.",
     features: [
-      "5 generations per month",
-      "10 Twitter + 5 LinkedIn + 3 TikTok ideas + 1 blog summary each time",
-      "Copy to clipboard for every block",
-      "Google sign-in to track usage",
+      "до 5 генераций в месяц",
+      "форматы: короткие посты, длинные посты, идеи для коротких видео и summary",
+      "копирование результата в один клик",
+      "вход через Google для сохранения истории",
     ],
-    cta: "Get started free",
+    cta: "Использовать бесплатно",
     href: "/generator",
     highlighted: false,
   },
   {
     name: "Pro",
-    price: "$19",
-    period: "/month",
-    description: "Unlimited generations. For creators and teams who ship daily.",
+    price: "—",
+    period: "",
+    description: "Платный тариф в разработке. Планируем безлимитные генерации и приоритетную поддержку.",
     features: [
-      "Unlimited generations",
-      "All output formats, same quality",
-      "Manage or cancel anytime via Stripe",
-      "Priority support",
+      "без ограничений по количеству генераций",
+      "все доступные форматы вывода",
+      "дополнительные настройки под командную работу",
+      "приоритетный ответ на запросы",
     ],
-    cta: "Upgrade to Pro",
-    href: "/dashboard",
+    cta: "Скоро доступен",
+    href: "/generator",
     highlighted: true,
   },
 ];
@@ -44,10 +41,10 @@ export function Pricing() {
     <section className="border-t border-slate-200 bg-white px-4 py-20" id="pricing">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl font-bold text-slate-900 sm:text-4xl">
-          Simple pricing
+          Тарифы
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-slate-600">
-          Start free. Upgrade when you need more. Cancel anytime.
+          Начните с бесплатного доступа. Платный тариф добавим, когда сервис выйдет в продакшн.
         </p>
         <div className="mt-12 grid gap-8 sm:grid-cols-2 sm:gap-6">
           {plans.map((plan) => (
@@ -75,6 +72,7 @@ export function Pricing() {
                     variant={plan.highlighted ? "primary" : "secondary"}
                     size="lg"
                     className="w-full"
+                    disabled={plan.highlighted}
                   >
                     {plan.cta}
                   </Button>
