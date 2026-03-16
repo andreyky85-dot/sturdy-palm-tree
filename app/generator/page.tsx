@@ -9,15 +9,25 @@ import type { GenerateResult } from "@/components/generator/ResultsCards";
 type HistoryItem = {
   id: string;
   input: string;
+  // URL видео, если генерация была по YouTube-ссылке; иначе null
+  videoUrl: string | null;
   createdAt: string;
   result: GenerateResult;
 };
 
 const HISTORY_KEY = "textflow_history_v1";
 const HISTORY_LIMIT = 5;
+// Регулярное выражение для детекта YouTube-URL (синхронизировано с lib/transcript.ts)
+const YOUTUBE_URL_REGEX =
+  /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 export default function GeneratorPage() {
+  // Текстовый транскрипт (либо вставленный вручную, либо сохранённый результат по YouTube)
   const [transcript, setTranscript] = useState("");
+  // YouTube URL, если пользователь выбирает генерацию по ссылке
+  const [videoUrl, setVideoUrl] = useState("");
+  // Режим ввода: true — работаем по YouTube URL, false — по тексту
+  const [useVideoUrl, setUseVideoUrl] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerateResult | null>(null);
@@ -37,10 +47,13 @@ export default function GeneratorPage() {
     }
   }, []);
 
-  const saveHistory = (input: string, res: GenerateResult) => {
+  // Сохраняем в историю как текст и (опционально) URL видео,
+  // чтобы пользователь мог вернуться к прошлой генерации
+  const saveHistory = (input: string, res: GenerateResult, videoUrlValue: string | null) => {
     const item: HistoryItem = {
       id: String(Date.now()),
       input,
+      videoUrl: videoUrlValue,
       createdAt: new Date().toISOString(),
       result: res,
     };
@@ -55,17 +68,43 @@ export default function GeneratorPage() {
     e.preventDefault();
     setError(null);
     setResult(null);
-    if (!transcript.trim()) {
-      setError("Вставьте текст, с которым нужно работать");
-      return;
+
+    // Валидация в зависимости от выбранного режима
+    if (useVideoUrl) {
+      const trimmedUrl = videoUrl.trim();
+      if (!trimmedUrl) {
+        setError("Вставьте ссылку на YouTube-видео");
+        return;
+      }
+      // Простейшая валидация URL на клиенте; на сервере есть дополнительная проверка
+      if (!/^https?:\/\/.+/i.test(trimmedUrl)) {
+        setError("Введите корректный URL (начинающийся с http:// или https://)");
+        return;
+      }
+    } else {
+      const trimmedTranscript = transcript.trim();
+      if (!trimmedTranscript) {
+        setError("Вставьте текст, с которым нужно работать");
+        return;
+      }
+      if (trimmedTranscript.length < 50) {
+        setError("Текст должен быть не короче 50 символов");
+        return;
+      }
     }
-    if (transcript.trim().length < 50) {
-      setError("Текст должен быть не короче 50 символов");
-      return;
-    }
+
     setLoading(true);
     try {
-      const body = { transcript: transcript.trim() };
+      const trimmedTranscript = transcript.trim();
+      const trimmedUrl = videoUrl.trim();
+
+      // Формируем тело запроса согласно контракту API:
+      // либо videoUrl, либо transcript, но не оба сразу.
+      const body =
+        useVideoUrl && trimmedUrl
+          ? { videoUrl: trimmedUrl }
+          : { transcript: trimmedTranscript };
+
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -82,7 +121,12 @@ export default function GeneratorPage() {
         return;
       }
       setResult(data);
-      saveHistory(transcript.trim(), data);
+
+      // В историю сохраняем текущий режим:
+      // либо исходный текст, либо пустую строку (если будет нужно — можно дополнительно вытаскивать транскрипт)
+      const historyInput = useVideoUrl ? trimmedUrl : trimmedTranscript;
+      const historyVideoUrl = useVideoUrl ? trimmedUrl : null;
+      saveHistory(historyInput, data, historyVideoUrl);
     } catch {
       setError("Network error. Try again.");
     } finally {
@@ -91,7 +135,17 @@ export default function GeneratorPage() {
   };
 
   const handleLoadFromHistory = (item: HistoryItem) => {
-    setTranscript(item.input);
+    // Если генерация была по тексту — подставляем текст.
+    // Если по YouTube — подставляем URL и очищаем текст, чтобы не было двойного источника.
+    if (item.videoUrl) {
+      setUseVideoUrl(true);
+      setVideoUrl(item.videoUrl);
+      setTranscript("");
+    } else {
+      setUseVideoUrl(false);
+      setTranscript(item.input);
+      setVideoUrl("");
+    }
     setResult(item.result);
     setError(null);
   };
@@ -103,6 +157,7 @@ export default function GeneratorPage() {
 
   const handleNew = () => {
     setTranscript("");
+    setVideoUrl("");
     setResult(null);
     setError(null);
   };
@@ -120,22 +175,73 @@ export default function GeneratorPage() {
     <main className="mx-auto max-w-4xl px-4 py-12">
       <Card>
         <CardHeader>
-          <CardTitle>Сгенерировать идеи из текста</CardTitle>
+          <CardTitle>Сгенерировать идеи из текста или YouTube</CardTitle>
         </CardHeader>
         <p className="text-sm text-slate-600">
-          Вставьте любой текст (идею, конспект, отрывок статьи), а мы предложим варианты постов для разных площадок.
+          Вставьте любой текст (идею, конспект, отрывок статьи) или ссылку на YouTube‑видео, а мы предложим варианты
+          постов для разных площадок.
         </p>
         <form onSubmit={handleSubmit} className="mt-6">
-          <div className="flex flex-col gap-3">
-            <textarea
-              placeholder="Вставьте сюда текст, с которым хотите поработать..."
-              value={transcript}
-              onChange={(e) => setTranscript(e.target.value)}
-              disabled={loading}
-              rows={8}
-              className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
-            />
-            <p className="text-xs text-slate-500">Минимум 50 символов, максимум 35 000.</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setUseVideoUrl(false);
+                }}
+                className={`rounded-full px-3 py-1 text-xs font-medium ${
+                  !useVideoUrl
+                    ? "bg-slate-900 text-white"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
+                disabled={loading}
+              >
+                Вставить текст
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUseVideoUrl(true);
+                }}
+                className={`rounded-full px-3 py-1 text-xs font-medium ${
+                  useVideoUrl
+                    ? "bg-slate-900 text-white"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
+                disabled={loading}
+              >
+                Ссылка на YouTube
+              </button>
+            </div>
+
+            {useVideoUrl ? (
+              <div className="flex flex-col gap-2">
+                <input
+                  type="url"
+                  placeholder="Вставьте ссылку на YouTube‑видео (youtube.com или youtu.be)…"
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
+                  disabled={loading}
+                  className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+                />
+                <p className="text-xs text-slate-500">
+                  Мы автоматически получим транскрипт видео (если он доступен) и сгенерируем контент на его основе.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <textarea
+                  placeholder="Вставьте сюда текст, с которым хотите поработать..."
+                  value={transcript}
+                  onChange={(e) => setTranscript(e.target.value)}
+                  disabled={loading}
+                  rows={8}
+                  className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+                />
+                <p className="text-xs text-slate-500">Минимум 50 символов, максимум 35 000.</p>
+              </div>
+            )}
+
             <div className="flex items-center gap-3">
               <Button type="submit" loading={loading} size="lg">
                 Сгенерировать
@@ -192,9 +298,22 @@ export default function GeneratorPage() {
                 className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-left hover:bg-slate-50"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-slate-800 line-clamp-2">
-                    {item.input}
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-slate-800 line-clamp-2">
+                      {item.input}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                          item.videoUrl
+                            ? "bg-red-50 text-red-700 ring-1 ring-red-100"
+                            : "bg-slate-50 text-slate-700 ring-1 ring-slate-100"
+                        }`}
+                      >
+                        {item.videoUrl ? "YouTube" : "Текст"}
+                      </span>
+                    </div>
+                  </div>
                   <span className="whitespace-nowrap text-xs text-slate-500">
                     {formatDate(item.createdAt)}
                   </span>
