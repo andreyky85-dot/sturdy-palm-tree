@@ -1,14 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { ResultsCards } from "@/components/generator/ResultsCards";
 import type { GenerateResult } from "@/components/generator/ResultsCards";
 
 export default function GeneratorPage() {
-  const [mode] = useState<"transcript">("transcript");
   const [transcript, setTranscript] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,15 +50,12 @@ export default function GeneratorPage() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="mx-auto max-w-4xl px-4 py-12">
+    <main className="mx-auto max-w-4xl px-4 py-12">
         <h1 className="text-2xl font-bold text-slate-900">Generate content</h1>
         <p className="mt-1 text-slate-600">
           Paste a transcript (e.g. TikTok, podcast, any text). We’ll generate posts for different platforms.
         </p>
         <form onSubmit={handleSubmit} className="mt-8">
-          {mode === "transcript" && (
             <div className="flex flex-col gap-3">
               <textarea
                 placeholder="Paste your transcript here (e.g. from TikTok subtitles, a podcast, or any video text)..."
@@ -76,7 +70,6 @@ export default function GeneratorPage() {
                 Generate
               </Button>
             </div>
-          )}
         </form>
         {error && (
           <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
@@ -90,6 +83,5 @@ export default function GeneratorPage() {
           </div>
         )}
       </main>
-    </>
   );
 }
