@@ -7,11 +7,8 @@ import { Input } from "@/components/ui/Input";
 import { ResultsCards } from "@/components/generator/ResultsCards";
 import type { GenerateResult } from "@/components/generator/ResultsCards";
 
-type InputMode = "url" | "transcript";
-
 export default function GeneratorPage() {
-  const [mode, setMode] = useState<InputMode>("url");
-  const [url, setUrl] = useState("");
+  const [mode] = useState<"transcript">("transcript");
   const [transcript, setTranscript] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,26 +18,17 @@ export default function GeneratorPage() {
     e.preventDefault();
     setError(null);
     setResult(null);
-    if (mode === "url") {
-      if (!url.trim()) {
-        setError("Enter a video URL");
-        return;
-      }
-    } else {
-      if (!transcript.trim()) {
-        setError("Paste the transcript text");
-        return;
-      }
-      if (transcript.trim().length < 50) {
-        setError("Transcript must be at least 50 characters");
-        return;
-      }
+    if (!transcript.trim()) {
+      setError("Paste the transcript text");
+      return;
+    }
+    if (transcript.trim().length < 50) {
+      setError("Transcript must be at least 50 characters");
+      return;
     }
     setLoading(true);
     try {
-      const body = mode === "url"
-        ? { videoUrl: url.trim() }
-        : { transcript: transcript.trim() };
+      const body = { transcript: transcript.trim() };
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,40 +58,10 @@ export default function GeneratorPage() {
       <main className="mx-auto max-w-4xl px-4 py-12">
         <h1 className="text-2xl font-bold text-slate-900">Generate content</h1>
         <p className="mt-1 text-slate-600">
-          Paste a YouTube URL or paste a transcript (e.g. TikTok, podcast, any text). We’ll pull the transcript and generate posts.
+          Paste a transcript (e.g. TikTok, podcast, any text). We’ll generate posts for different platforms.
         </p>
-        <div className="mt-6 flex gap-2 border-b border-slate-200">
-          <button
-            type="button"
-            onClick={() => { setMode("url"); setError(null); }}
-            className={`border-b-2 px-3 py-2 text-sm font-medium ${mode === "url" ? "border-slate-900 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-700"}`}
-          >
-            YouTube URL
-          </button>
-          <button
-            type="button"
-            onClick={() => { setMode("transcript"); setError(null); }}
-            className={`border-b-2 px-3 py-2 text-sm font-medium ${mode === "transcript" ? "border-slate-900 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-700"}`}
-          >
-            Paste transcript (TikTok, podcast, any text)
-          </button>
-        </div>
         <form onSubmit={handleSubmit} className="mt-8">
-          {mode === "url" ? (
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Input
-                type="url"
-                placeholder="https://www.youtube.com/watch?v=..."
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                disabled={loading}
-                className="flex-1"
-              />
-              <Button type="submit" loading={loading} size="lg">
-                Generate
-              </Button>
-            </div>
-          ) : (
+          {mode === "transcript" && (
             <div className="flex flex-col gap-3">
               <textarea
                 placeholder="Paste your transcript here (e.g. from TikTok subtitles, a podcast, or any video text)..."
