@@ -96,6 +96,17 @@ export default function GeneratorPage() {
     setError(null);
   };
 
+  const handleLoadLast = () => {
+    if (!history.length) return;
+    handleLoadFromHistory(history[0]);
+  };
+
+  const handleNew = () => {
+    setTranscript("");
+    setResult(null);
+    setError(null);
+  };
+
   const formatDate = (iso: string) => {
     try {
       const d = new Date(iso);
@@ -128,6 +139,24 @@ export default function GeneratorPage() {
             <div className="flex items-center gap-3">
               <Button type="submit" loading={loading} size="lg">
                 Сгенерировать
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="secondary"
+                disabled={!history.length || loading}
+                onClick={handleLoadLast}
+              >
+                Последняя генерация
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                disabled={loading}
+                onClick={handleNew}
+              >
+                Новая
               </Button>
               {loading && (
                 <span className="text-xs text-slate-500">
