@@ -41,7 +41,7 @@ npm run dev
    - `OPENAI_API_KEY` — без ключа генератор работает в шаблонном режиме
    - `BILLING_ENABLED=false` или не задавать; Stripe-ключи и webhook — только если включаете оплату (`BILLING_ENABLED=true`), см. `env.vercel.example`
 
-5. **Deploy:** нажмите **Deploy**. Команда сборки из `vercel.json`: **`npm run build:vercel`** → `prisma generate` → **`prisma migrate deploy`** → `next build`. В логах сборки должны быть эти этапы.
+5. **Deploy:** нажмите **Deploy**. Команда сборки из `vercel.json`: **`npm run build:vercel`** (скрипт `scripts/vercel-build.mjs`: при отсутствии `DATABASE_URL` подставляет `POSTGRES_PRISMA_URL` / `POSTGRES_URL`, затем `prisma generate` → **`prisma migrate deploy`** → `next build`). В логах должны быть эти этапы. Если сборка падает с **P1012** / «Environment variable not found: DATABASE_URL» — не задана БД для Production. Если **P1001** — строка есть, но сервер БД недоступен с Vercel (неверный host, firewall, только локальный Postgres).
 
 6. **Stripe Webhook** (только при включённом биллинге): после деплоя в [Stripe → Webhooks](https://dashboard.stripe.com/webhooks) добавьте:
    - URL: `https://ваш-домен.vercel.app/api/stripe/webhook`
