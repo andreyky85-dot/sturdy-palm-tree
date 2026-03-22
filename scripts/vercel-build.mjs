@@ -50,6 +50,8 @@ function looksLikePostgresUrl(s) {
 
 const URL_KEY_PRIORITY = [
   "DATABASE_URL",
+  // Прямое подключение без пулера — часто задают отдельно; migrate с ним надёжнее, чем с pooled URL.
+  "DIRECT_URL",
   "POSTGRES_PRISMA_URL",
   "POSTGRES_URL",
   "PRISMA_DATABASE_URL",
@@ -58,12 +60,45 @@ const URL_KEY_PRIORITY = [
   "NEON_DATABASE_URL",
 ];
 
+/**
+ * Собираем postgresql:// из классических libpq-переменных (PGHOST, PGUSER, …).
+ * Альтернатива — один URI в DATABASE_URL; но часть хостингов на Build отдаёт только «разобранные» поля.
+ */
+function pickDatabaseUrlFromPgComponents() {
+  const host = process.env.PGHOST?.trim();
+  const database = process.env.PGDATABASE?.trim();
+  const user = process.env.PGUSER?.trim();
+  if (!host || !database || !user) {
+    return { url: "", source: null };
+  }
+  const password = process.env.PGPASSWORD ?? "";
+  const port = (process.env.PGPORT || "5432").trim();
+  const sslRaw = process.env.PGSSLMODE?.trim();
+  // На Vercel к внешнему Postgres почти всегда нужен TLS; если режим не задан — подстраховываемся.
+  const sslmode = sslRaw || (process.env.VERCEL ? "require" : "");
+  const userEnc = encodeURIComponent(user);
+  const passPart =
+    password.length > 0 ? `:${encodeURIComponent(password)}` : "";
+  const dbSeg = encodeURIComponent(database);
+  const query = sslmode ? `?sslmode=${encodeURIComponent(sslmode)}` : "";
+  const url = `postgresql://${userEnc}${passPart}@${host}:${port}/${dbSeg}${query}`;
+  return {
+    url,
+    source: "PGHOST+PGUSER+PGDATABASE+PGPORT(+PGPASSWORD,+PGSSLMODE)",
+  };
+}
+
 function pickDatabaseUrl() {
   for (const key of URL_KEY_PRIORITY) {
     const v = process.env[key]?.trim();
     if (v && looksLikePostgresUrl(v)) {
       return { url: v, source: key };
     }
+  }
+
+  const fromPg = pickDatabaseUrlFromPgComponents();
+  if (fromPg.url && looksLikePostgresUrl(fromPg.url)) {
+    return fromPg;
   }
 
   for (const [key, val] of Object.entries(process.env)) {
@@ -84,7 +119,8 @@ function debugRelatedEnvKeys() {
   return Object.keys(process.env)
     .filter(
       (k) =>
-        /POSTGRES|DATABASE|PRISMA|NEON|SUPABASE|SQL/i.test(k) &&
+        (/POSTGRES|DATABASE|PRISMA|NEON|SUPABASE|SQL/i.test(k) ||
+          /^PG(HOST|PORT|USER|PASSWORD|DATABASE|SSLMODE)$/i.test(k)) &&
         !/NEXT_PUBLIC|VERCEL_GIT|VERCEL_URL|VERCEL_ENV|VERCEL_REGION/i.test(k)
     )
     .sort();
@@ -111,6 +147,7 @@ const { url: dbUrl, source } = pickDatabaseUrl();
 if (!dbUrl) {
   const related = debugRelatedEnvKeys();
   const onVercel = Boolean(process.env.VERCEL);
+  const vercelEnv = process.env.VERCEL_ENV || "(не задано)";
 
   if (skipMigrate && onVercel) {
     console.warn(
@@ -128,6 +165,11 @@ if (!dbUrl) {
   console.error(
     "\n[vercel-build] Нет строки подключения к PostgreSQL для Prisma migrate.\n"
   );
+  if (onVercel) {
+    console.error(
+      `  Контекст Vercel: VERCEL_ENV=${vercelEnv} (проверьте, что переменная БД включена именно для этого окружения: Production / Preview / Development).\n`
+    );
+  }
   console.error(
     "  Переменные в окружении со «похожими» именами (только имена, без значений):"
   );
@@ -137,7 +179,8 @@ if (!dbUrl) {
   console.error(`
   Что сделать:
   1) Откройте в репозитории файл ${DOC_HINT} — там пошагово (Vercel Storage и внешняя БД).
-  2) В Vercel: Settings → Environment Variables → добавьте DATABASE_URL (Production) → Redeploy.
+  2) В Vercel: Settings → Environment Variables → добавьте DATABASE_URL или DIRECT_URL (URI postgres://…) для нужного окружения → Redeploy.
+     Либо полный набор PGHOST, PGUSER, PGPASSWORD, PGDATABASE (и при необходимости PGPORT, PGSSLMODE=require).
 
   Временный обход (сборка без миграций): задайте в Vercel переменную PRISMA_BUILD_SKIP_MIGRATE=1
   и после деплоя выполните локально: npx prisma migrate deploy с продовой DATABASE_URL.

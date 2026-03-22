@@ -66,8 +66,10 @@
 | Симптом | Что проверить |
 |--------|----------------|
 | Переменные есть, сборка их «не видит» | Для этой переменной включён ли **Production**? Иногда добавляют только **Development**. |
-| Деплой Preview, а `DATABASE_URL` только в Production | Либо добавьте ту же переменную для **Preview**, либо деплойте **Production**. |
+| Деплой Preview, а `DATABASE_URL` только в Production | Либо добавьте ту же переменную для **Preview**, либо деплойте **Production**. В логе сборки скрипт печатает `VERCEL_ENV` — сверьте с тем, для какого окружения в Vercel включена переменная. |
 | В Storage база есть, в Env пусто | Строку всё равно нужно **вручную** добавить в **Environment Variables** (см. шаг 5 варианта A). |
+| Есть только `DIRECT_URL` (Prisma с пулером) | Добавьте в Vercel **`DIRECT_URL`** с непулинговым `postgresql://…` — скрипт `build:vercel` подхватит её для migrate, если `DATABASE_URL` нет. |
+| Есть только `PGHOST`, `PGUSER`, … без одного URI | Скрипт сборки соберёт `postgresql://` из `PGHOST`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`, опционально `PGPORT` и `PGSSLMODE=require`. |
 | Строка не начинается с `postgres` | Нужна именно URI Postgres, не HTTP API Supabase. |
 
 ## Временный обход: сборка без миграций
