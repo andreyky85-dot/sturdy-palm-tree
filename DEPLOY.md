@@ -39,6 +39,8 @@ npm run dev
 
    Скрипт `scripts/vercel-build.mjs` также пробует `POSTGRES_PRISMA_URL`, `POSTGRES_URL` и другие типичные имена, если они реально попадают в env сборки.
 
+   Если сборка всё равно не видит БД — пошаговая памятка: **`docs/VERCEL_DATABASE_URL.md`** (в т.ч. обход `PRISMA_BUILD_SKIP_MIGRATE`).
+
 4. **Переменные (обязательный минимум):** **Settings** → **Environment Variables**:
    - `NEXTAUTH_URL` = **https://ваш-домен.vercel.app** (без слэша в конце; после кастомного домена обновите)
    - `NEXT_PUBLIC_APP_URL` = то же значение

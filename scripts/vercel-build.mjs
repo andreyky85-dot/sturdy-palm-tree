@@ -2,9 +2,9 @@
 /**
  * Сборка для Vercel: нормализация строки БД перед Prisma и Next.
  *
- * Проблема: Prisma требует DATABASE_URL; Vercel Storage может выставить POSTGRES_*,
- * а иногда на этапе Build переменные из Storage вообще не попадают в окружение —
- * тогда строку нужно добавить вручную в Project → Environment Variables.
+ * Проблема: Prisma migrate требует DATABASE_URL на этапе Build; Vercel иногда
+ * не передаёт переменные из Storage в Build — тогда задают DATABASE_URL вручную
+ * или используют PRISMA_BUILD_SKIP_MIGRATE (см. docs/VERCEL_DATABASE_URL.md).
  */
 
 import { spawnSync } from "child_process";
@@ -14,6 +14,9 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
+
+const DOC_HINT =
+  "Подробная инструкция с вариантами A/B: docs/VERCEL_DATABASE_URL.md";
 
 function loadEnvLocal() {
   const p = path.join(root, ".env.local");
@@ -45,10 +48,6 @@ function looksLikePostgresUrl(s) {
   return t.startsWith("postgresql:") || t.startsWith("postgres:");
 }
 
-/**
- * Порядок имён — от более подходящих для Prisma migrate к запасным.
- * Neon / Supabase иногда дают свои имена; ищем и по ним.
- */
 const URL_KEY_PRIORITY = [
   "DATABASE_URL",
   "POSTGRES_PRISMA_URL",
@@ -81,7 +80,6 @@ function pickDatabaseUrl() {
   return { url: "", source: null };
 }
 
-/** В лог — только имена, без значений (секреты не светим). */
 function debugRelatedEnvKeys() {
   return Object.keys(process.env)
     .filter(
@@ -104,10 +102,29 @@ function run(cmd, args, env) {
   }
 }
 
+const skipMigrate =
+  process.env.PRISMA_BUILD_SKIP_MIGRATE === "1" ||
+  process.env.PRISMA_BUILD_SKIP_MIGRATE === "true";
+
 const { url: dbUrl, source } = pickDatabaseUrl();
 
 if (!dbUrl) {
   const related = debugRelatedEnvKeys();
+  const onVercel = Boolean(process.env.VERCEL);
+
+  if (skipMigrate && onVercel) {
+    console.warn(
+      "\n[vercel-build] PRISMA_BUILD_SKIP_MIGRATE включён: пропускаем `prisma migrate deploy`.\n" +
+        "  Схема БД должна быть применена вручную (см. " +
+        DOC_HINT +
+        ", раздел «Временный обход»).\n"
+    );
+    const env = { ...process.env };
+    run("npx", ["prisma", "generate"], env);
+    run("npx", ["next", "build"], env);
+    process.exit(0);
+  }
+
   console.error(
     "\n[vercel-build] Нет строки подключения к PostgreSQL для Prisma migrate.\n"
   );
@@ -118,15 +135,13 @@ if (!dbUrl) {
     related.length ? `  ${related.join(", ")}` : "  (нет — БД не видна на этапе Build)"
   );
   console.error(`
-  Что сделать в Vercel:
-  1) Project → Storage → ваша Postgres → скопируйте connection string (или вкладка .env).
-  2) Project → Settings → Environment Variables → Add:
-     Name: DATABASE_URL
-     Value: вставьте строку (начинается с postgres:// или postgresql://)
-     Environments: включите Production (и Preview, если нужно).
-  3) Если переменная помечена как доступная только в Runtime — для migrate на сборке
-     она недоступна; задайте DATABASE_URL явно для всех нужных сред / снимите ограничение.
-  4) Сохраните и сделайте Redeploy.
+  Что сделать:
+  1) Откройте в репозитории файл ${DOC_HINT} — там пошагово (Vercel Storage и внешняя БД).
+  2) В Vercel: Settings → Environment Variables → добавьте DATABASE_URL (Production) → Redeploy.
+
+  Временный обход (сборка без миграций): задайте в Vercel переменную PRISMA_BUILD_SKIP_MIGRATE=1
+  и после деплоя выполните локально: npx prisma migrate deploy с продовой DATABASE_URL.
+  Подробности — в том же docs/VERCEL_DATABASE_URL.md
 `);
   process.exit(1);
 }
