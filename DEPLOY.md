@@ -8,12 +8,14 @@
 npm install
 ```
 
-Заполните `.env.local` (ключи OpenAI, Stripe, Google, `DATABASE_URL` для Postgres). Затем:
+Заполните `.env.local` (минимум: Google OAuth, `NEXTAUTH_*`, `DATABASE_URL`; OpenAI и Stripe — по необходимости). Затем:
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev
 npm run dev
 ```
+
+Если миграций ещё нет (первый клон), создайте их: `npx prisma migrate dev --name init`.
 
 Откройте в браузере: **http://localhost:3000**
 
@@ -27,25 +29,32 @@ npm run dev
 
 2. **Vercel:** зайдите на [vercel.com](https://vercel.com) → **Add New** → **Project** → выберите репозиторий → **Import**.
 
-3. **База:** в проекте вкладка **Storage** → **Create Database** → **Postgres** → подключите к проекту (подставится `DATABASE_URL`).
+3. **База (до первого успешного деплоя с миграциями):** вкладка **Storage** → **Create Database** → **Postgres** → **Connect to Project**. В Environment Variables появится **`DATABASE_URL`** (или задайте свою строку внешнего Postgres вручную). Без рабочего `DATABASE_URL` шаг `prisma migrate deploy` на сборке завершится ошибкой.
 
-4. **Переменные:** **Settings** → **Environment Variables** — добавьте переменные (полный список в `env.vercel.example`):
-   - `OPENAI_API_KEY`
-   - `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRO_PRICE_ID`
-   - `NEXTAUTH_URL` = **https://ваш-домен.vercel.app**
-   - `NEXTAUTH_SECRET` (сгенерируйте: `openssl rand -base64 32`)
+4. **Переменные (обязательный минимум):** **Settings** → **Environment Variables**:
+   - `NEXTAUTH_URL` = **https://ваш-домен.vercel.app** (без слэша в конце; после кастомного домена обновите)
+   - `NEXT_PUBLIC_APP_URL` = то же значение
+   - `NEXTAUTH_SECRET` (например `openssl rand -base64 32`, длина ≥ 32 символов)
    - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
-   - `NEXT_PUBLIC_APP_URL` = тот же, что `NEXTAUTH_URL`
 
-5. **Deploy:** нажмите **Deploy**. Сборка выполнит `prisma generate`, `prisma migrate deploy` и `next build`.
+   **Опционально:**
+   - `OPENAI_API_KEY` — без ключа генератор работает в шаблонном режиме
+   - `BILLING_ENABLED=false` или не задавать; Stripe-ключи и webhook — только если включаете оплату (`BILLING_ENABLED=true`), см. `env.vercel.example`
 
-6. **Stripe Webhook:** после первого деплоя в [Stripe → Webhooks](https://dashboard.stripe.com/webhooks) добавьте:
+5. **Deploy:** нажмите **Deploy**. Команда сборки из `vercel.json`: **`npm run build:vercel`** → `prisma generate` → **`prisma migrate deploy`** → `next build`. В логах сборки должны быть эти этапы.
+
+6. **Stripe Webhook** (только при включённом биллинге): после деплоя в [Stripe → Webhooks](https://dashboard.stripe.com/webhooks) добавьте:
    - URL: `https://ваш-домен.vercel.app/api/stripe/webhook`
    - События: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
    - Секрет webhook добавьте в Vercel как `STRIPE_WEBHOOK_SECRET`.
 
-7. **Google OAuth:** в Google Cloud Console в настройках OAuth-клиента добавьте redirect URI:
-   `https://ваш-домен.vercel.app/api/auth/callback/google`
+7. **Google OAuth:** в Google Cloud Console в настройках OAuth-клиента добавьте **Authorized redirect URI**:
+   `https://ваш-домен.vercel.app/api/auth/callback/google`  
+   (замените на прод-домен; для Preview-деплоев при необходимости добавьте отдельный URI с `*.vercel.app`.)
+
+---
+
+**Чеклист после деплоя:** сайт открывается → **Войти через Google** → **Генератор** → **Кабинет** (usage). Stripe — только если `BILLING_ENABLED=true`. Подробнее — раздел 4.8 в `README.md`.
 
 ---
 
@@ -91,4 +100,4 @@ npm run marketing:bundle -- 1.0.1
 
 ---
 
-**Чеклист после деплоя:** лендинг открывается → вход через Google работает → генератор возвращает посты → Dashboard показывает usage → при включённом биллинге Stripe и webhook настроены. Подробный чеклист — в README.
+Итоговый чеклист проверки сайта — **раздел 4.8 в `README.md`**.

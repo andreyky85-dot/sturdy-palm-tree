@@ -1,5 +1,6 @@
 # Сборка и тесты без реальных ключей: подставляются безопасные заглушки только для компиляции Next.js.
 # OpenAI, Stripe, Postgres, Upstash в CI не используются.
+# На Vercel прод-сборка: npm run build:vercel (с prisma migrate deploy), см. vercel.json.
 name: CI
 
 on:

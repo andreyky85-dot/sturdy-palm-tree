@@ -57,7 +57,7 @@ npm run dev
 
 1. Залийте код в GitHub/GitLab/Bitbucket.
 2. Зайдите на [vercel.com](https://vercel.com) → Add New → Project → импортируйте репозиторий.
-3. Framework Preset: Next.js. Root Directory: оставьте пустым. Build Command и Output оставьте по умолчанию (в проекте задано в `vercel.json`).
+3. Framework Preset: Next.js. Root Directory: оставьте пустым. **Build Command** подтягивается из `vercel.json`: `npm run build:vercel` (Prisma generate + migrate deploy + `next build`). Output — по умолчанию.
 
 ### 4.2 База данных (Vercel Postgres)
 
@@ -73,25 +73,26 @@ npm run dev
 
 | Переменная | Описание |
 |------------|----------|
-| `DATABASE_URL` | Подставляется из Vercel Postgres или вставьте свою Postgres URL |
-| `OPENAI_API_KEY` | Ключ OpenAI API |
-| `STRIPE_SECRET_KEY` | Секретный ключ Stripe |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Публичный ключ Stripe |
-| `STRIPE_WEBHOOK_SECRET` | Секрет webhook (см. п. 4.5) |
-| `STRIPE_PRO_PRICE_ID` | Price ID тарифа Pro ($19/мес) |
-| `NEXTAUTH_URL` | **https://ваш-домен.vercel.app** (без слэша в конце) |
-| `NEXTAUTH_SECRET` | Случайная строка (например `openssl rand -base64 32`) |
+| `DATABASE_URL` | **Обязательно до сборки с миграциями:** Vercel Postgres или своя строка Postgres |
+| `NEXTAUTH_URL` | **https://ваш-домен.vercel.app** (без слэша в конце; обновите после кастомного домена) |
+| `NEXTAUTH_SECRET` | Случайная строка ≥32 символов (`openssl rand -base64 32`) |
 | `GOOGLE_CLIENT_ID` | OAuth 2.0 Client ID (Google Cloud Console) |
 | `GOOGLE_CLIENT_SECRET` | Client Secret приложения Google |
-| `NEXT_PUBLIC_APP_URL` | То же, что `NEXTAUTH_URL` (для OG-ссылок и canonical) |
+| `NEXT_PUBLIC_APP_URL` | То же, что `NEXTAUTH_URL` (OG, canonical) |
+| `OPENAI_API_KEY` | Опционально; без ключа — шаблонный режим генерации |
+| `BILLING_ENABLED` | Опционально: `false` или не задавать; `true` только вместе со Stripe ниже |
+| `STRIPE_SECRET_KEY` | Только при оплате: секретный ключ Stripe |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Только при оплате |
+| `STRIPE_WEBHOOK_SECRET` | Только при оплате (п. 4.5) |
+| `STRIPE_PRO_PRICE_ID` | Только при оплате: Price ID Pro ($19/мес) |
 
 ### 4.4 Сборка и миграции
 
-В `vercel.json` задано:
+В `vercel.json` указано **`buildCommand`: `npm run build:vercel`**, в `package.json` это:
 
-- `buildCommand`: `prisma generate && prisma migrate deploy && next build`
+`prisma generate` → `prisma migrate deploy` → `next build`.
 
-При каждом деплое выполняются миграции Prisma к вашей production-базе. Первый деплой создаст таблицы.
+Перед первым деплоем в Vercel должна быть доступна **`DATABASE_URL`**, иначе `migrate deploy` упадёт. Локально и в **GitHub Actions CI** по-прежнему используется `npm run build` (без миграций и без БД — только проверка компиляции).
 
 ### 4.5 Stripe Webhook
 
@@ -116,13 +117,12 @@ npm run dev
 
 ### 4.8 Чеклист после деплоя
 
-- [ ] Открыть **https://ваш-домен.vercel.app** — лендинг грузится.
-- [ ] **Sign in with Google** — вход работает (если добавлен redirect URI в п. 4.6).
-- [ ] Страница **Generator** — вставить YouTube-ссылку, нажать Generate, приходят посты.
-- [ ] **Dashboard** — отображаются данные пользователя и использование.
-- [ ] При `BILLING_ENABLED=true`: кнопка **Перейти на Pro** — редирект на Stripe Checkout (нужен `STRIPE_PRO_PRICE_ID`).
-- [ ] При включённом биллинге: webhook в Stripe (п. 4.5) и `STRIPE_WEBHOOK_SECRET` в Vercel.
-- [ ] При необходимости обновить `NEXTAUTH_URL` и `NEXT_PUBLIC_APP_URL` на кастомный домен.
+- [ ] Открыть прод-URL — лендинг грузится.
+- [ ] **Войти через Google** на `/login` — редирект в **Кабинет** (если в Google Cloud добавлен redirect URI из п. 4.6).
+- [ ] **Генератор** — ссылка YouTube или текст; кнопка генерации; ответ (с `OPENAI_API_KEY` — ИИ, без — шаблон).
+- [ ] **Кабинет** — email/usage, без ошибки «профиль не найден» (миграции и `DATABASE_URL` применены).
+- [ ] При `BILLING_ENABLED=true`: **Перейти на Pro** → Stripe Checkout; в Stripe настроен webhook и `STRIPE_WEBHOOK_SECRET` в Vercel.
+- [ ] Кастомный домен: обновить `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL` и redirect URI в Google (и при необходимости в Stripe).
 
 ---
 
