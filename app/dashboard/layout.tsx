@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Your Content Multiplier account, usage stats, and subscription.",
+  description: "Аккаунт TextFlow: использование и настройки.",
 };
 
 export default function DashboardLayout({

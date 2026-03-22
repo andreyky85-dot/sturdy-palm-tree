@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 
 export const metadata = {
   title: "Privacy Policy",
-  description: "Content Multiplier privacy policy.",
+  description: "Политика конфиденциальности TextFlow.",
 };
 
 export default function PrivacyPage() {
@@ -17,19 +17,19 @@ export default function PrivacyPage() {
         </p>
         <div className="prose prose-slate mt-8 max-w-none text-slate-700">
           <p>
-            Content Multiplier processes your data to provide the service: generating social media content from video URLs.
+            TextFlow обрабатывает ваши данные для работы сервиса: генерации идей контента из текста или по ссылке на YouTube (транскрипт).
           </p>
           <h2 className="mt-6 text-lg font-semibold text-slate-900">Data we collect</h2>
           <p>
-            When you sign in with Google, we receive your email, name, and profile image. We store your usage (number of generations per month) and, if you subscribe to Pro, your Stripe customer and subscription IDs. We do not store video files or full transcripts; transcripts are sent to OpenAI only to produce the generated content and are not retained by us.
+            При входе через Google мы получаем email, имя и фото профиля. Храним учёт использования (число генераций за месяц). При включённой оплате — идентификаторы клиента Stripe; пока платежи отключены, эти поля не используются. Видеофайлы не храним; текст/транскрипт передаётся провайдеру ИИ для генерации ответа и не сохраняется нами как архив.
           </p>
           <h2 className="mt-6 text-lg font-semibold text-slate-900">How we use it</h2>
           <p>
-            We use your data to authenticate you, enforce plan limits (Free vs Pro), and process payments. We do not sell your data to third parties.
+            Данные используются для входа, соблюдения лимитов тарифов и (при включённом биллинге) обработки платежей. Мы не продаём персональные данные третьим лицам.
           </p>
           <h2 className="mt-6 text-lg font-semibold text-slate-900">Third parties</h2>
           <p>
-            We use Google (sign-in), OpenAI (content generation), Stripe (payments), and our database provider. Their privacy policies apply to their processing.
+            Используются сервисы Google (вход), OpenAI (генерация текста), при необходимости Stripe (платежи) и провайдер базы данных. На их сторону распространяются отдельные политики конфиденциальности.
           </p>
           <h2 className="mt-6 text-lg font-semibold text-slate-900">Contact</h2>
           <p>

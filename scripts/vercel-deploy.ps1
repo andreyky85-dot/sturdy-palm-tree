@@ -1,4 +1,4 @@
-# Content Multiplier — деплой на Vercel через CLI
+# TextFlow — деплой на Vercel через CLI
 # Убедитесь: 1) код в Git, 2) переменные добавлены в Vercel (Settings → Environment Variables)
 # Запуск: .\scripts\vercel-deploy.ps1
 

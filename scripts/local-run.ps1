@@ -1,4 +1,4 @@
-# Content Multiplier — запуск локально
+# TextFlow — запуск локально
 # Запуск: правый клик → Выполнить с PowerShell, или в терминале: .\scripts\local-run.ps1
 
 Set-Location $PSScriptRoot\..

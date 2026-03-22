@@ -1,6 +1,6 @@
-# Content Multiplier
+# TextFlow
 
-SaaS: turn one YouTube (or TikTok) video into multiple social posts — Twitter, LinkedIn, TikTok ideas, blog summary.
+Сервис: из текста или транскрипта YouTube — готовые идеи постов для соцсетей, коротких видео и блога. Бесплатный тариф с лимитом генераций в месяц; платежи выключены по умолчанию (`BILLING_ENABLED`).
 
 ## Stack
 
@@ -11,6 +11,14 @@ SaaS: turn one YouTube (or TikTok) video into multiple social posts — Twitter,
 - **NextAuth** with Google
 - **Prisma** + PostgreSQL (local and Vercel)
 
+## Без оплаты и без платных API (Stripe / OpenAI)
+
+- **Stripe:** `BILLING_ENABLED=false` или не задавайте переменную — списаний нет, сценарии checkout/portal не используются для реальных платежей.
+- **OpenAI:** без `OPENAI_API_KEY` работает **шаблонный режим** генерации (удобно для вёрстки, обучения и CI).
+- **Postgres:** для Google-входа, `/api/me` и лимитов нужна **база** (часто бесплатный tier Neon/Supabase/Vercel Postgres) — это не Stripe, но регистрация у провайдера БД всё равно нужна.
+- Проверить, чего не хватает в `.env.local`, без печати секретов: `npm run check:env`.
+- При **push** и **pull request** в GitHub выполняется **CI** (lint, unit-тесты, `next build` с подставными строками, без реальных ключей) — см. `.github/workflows/ci.yml`.
+
 ## Setup (локально)
 
 1. Скопируйте env и заполните:
@@ -19,14 +27,17 @@ SaaS: turn one YouTube (or TikTok) video into multiple social posts — Twitter,
 cp .env.example .env.local
 ```
 
-В `.env.local` нужны:
+В `.env.local` обязательны для полноценного продукта:
 
-- `OPENAI_API_KEY` — ключ OpenAI
-- `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRO_PRICE_ID`
 - `NEXTAUTH_URL` (например `http://localhost:3000`), `NEXTAUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
 - `DATABASE_URL` — строка подключения PostgreSQL (Neon, Supabase, Docker или локальный сервер)
 
-2. Stripe: в дашборде создайте продукт «Pro» и цену $19/мес, подставьте Price ID в `STRIPE_PRO_PRICE_ID`.
+Опционально:
+
+- `OPENAI_API_KEY` — без него остаётся шаблонный режим генерации.
+- Stripe: только если включаете оплату — задайте `BILLING_ENABLED=true` и ключи из `.env.example`; до этого шага Stripe можно не трогать.
+
+2. Stripe (только для монетизации Pro): в дашборде создайте продукт «Pro» и цену $19/мес, подставьте Price ID в `STRIPE_PRO_PRICE_ID`, настройте webhook.
 
 3. Миграции и запуск:
 
@@ -109,8 +120,8 @@ npm run dev
 - [ ] **Sign in with Google** — вход работает (если добавлен redirect URI в п. 4.6).
 - [ ] Страница **Generator** — вставить YouTube-ссылку, нажать Generate, приходят посты.
 - [ ] **Dashboard** — отображаются данные пользователя и использование.
-- [ ] Кнопка **Upgrade to Pro** — редирект на Stripe Checkout (нужен `STRIPE_PRO_PRICE_ID`).
-- [ ] В Stripe добавлен webhook (п. 4.5), в Vercel задан `STRIPE_WEBHOOK_SECRET`.
+- [ ] При `BILLING_ENABLED=true`: кнопка **Перейти на Pro** — редирект на Stripe Checkout (нужен `STRIPE_PRO_PRICE_ID`).
+- [ ] При включённом биллинге: webhook в Stripe (п. 4.5) и `STRIPE_WEBHOOK_SECRET` в Vercel.
 - [ ] При необходимости обновить `NEXTAUTH_URL` и `NEXT_PUBLIC_APP_URL` на кастомный домен.
 
 ---

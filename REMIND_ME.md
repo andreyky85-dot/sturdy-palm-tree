@@ -1,4 +1,4 @@
-# Напоминание: что доделать для Content Multiplier
+# Напоминание: что доделать для TextFlow
 
 Откройте этот файл, когда вернётесь к проекту.
 
@@ -21,7 +21,7 @@
 ## Перед первым запуском
 
 - [ ] Файл `.env.local` заполнен (см. выше)
-- [ ] Выполнить: `npm install` → `npx prisma migrate dev --name init` → `npm run dev`
+- [ ] Выполнить: `npm install` → `npx prisma migrate deploy` (или `migrate dev` локально) → `npm run build-assets` → `npm run dev`
 - [ ] Или запустить: `.\scripts\run-both.ps1`
 
 ---

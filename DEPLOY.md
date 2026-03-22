@@ -1,4 +1,4 @@
-# Запуск и деплой Content Multiplier
+# Запуск и деплой TextFlow
 
 ## 1. Локально
 
@@ -74,4 +74,21 @@ vercel --prod
 
 ---
 
-**Чеклист после деплоя:** лендинг открывается → вход через Google работает → генератор возвращает посты → Dashboard показывает usage → Upgrade to Pro ведёт на Stripe → webhook и redirect URI настроены. Подробный чеклист — в README, п. 4.8.
+## 3. Релизы и маркетинг-бандл (GitHub)
+
+1. Обновите **`CHANGELOG.md`**: добавьте секцию `## [x.y.z] - ГГГГ-ММ-ДД` с пунктами изменений (секция должна совпадать с номером тега без префикса `v`).
+2. Создайте и отправьте тег: `git tag v1.0.1 && git push origin v1.0.1`.
+3. Запустится workflow **Release & marketing bundle** (`.github/workflows/release-marketing.yml`): создаётся **GitHub Release** с телом из changelog и архив **`textflow-marketing-x.y.z.zip`** с черновиками `twitter.md`, `linkedin.md`, `telegram.md`.
+4. Опционально: в репозитории **Settings → Secrets and variables → Actions → Variables** задайте **`MARKETING_SITE_URL`** (ваш прод-домен) — иначе в ссылках используется `https://textflow.app`.
+
+Локальная проверка без тега:
+
+```bash
+npm run marketing:bundle -- 1.0.1
+```
+
+Полный пошаговый чеклист (CHANGELOG, bump, тег): **`docs/RELEASING.md`**.
+
+---
+
+**Чеклист после деплоя:** лендинг открывается → вход через Google работает → генератор возвращает посты → Dashboard показывает usage → при включённом биллинге Stripe и webhook настроены. Подробный чеклист — в README.

@@ -1,4 +1,4 @@
-# Content Multiplier — Launch-Ready Marketing Content
+# TextFlow — Launch-Ready Marketing Content
 
 Energetic, approachable, startup-friendly. Emphasizes time-saving and virality.
 
@@ -7,7 +7,7 @@ Energetic, approachable, startup-friendly. Emphasizes time-saving and virality.
 ## PRODUCT HUNT POST
 
 **Title**  
-Content Multiplier — Turn 1 video into 19+ posts in seconds
+TextFlow — Turn 1 video into 19+ posts in seconds
 
 **Tagline**  
 One YouTube or TikTok link. Ten Twitter posts, five LinkedIn posts, three TikTok ideas, and a blog summary. AI does the work.
@@ -28,9 +28,9 @@ One YouTube or TikTok link. Ten Twitter posts, five LinkedIn posts, three TikTok
 
 You record one great video. Then you spend an hour cutting it into threads, LinkedIn posts, and TikTok hooks. Sound familiar?
 
-Content Multiplier flips that. Paste a YouTube or TikTok link. Our AI pulls the transcript and turns it into **19+ pieces of content** in one go: 10 Twitter posts, 5 LinkedIn posts, 3 TikTok video ideas, and a blog summary. Each block is tuned for its platform—short and punchy for Twitter, professional for LinkedIn, hook-first for TikTok—so you’re not pasting the same text everywhere.
+TextFlow flips that. Paste a YouTube or TikTok link. Our AI pulls the transcript and turns it into **19+ pieces of content** in one go: 10 Twitter posts, 5 LinkedIn posts, 3 TikTok video ideas, and a blog summary. Each block is tuned for its platform—short and punchy for Twitter, professional for LinkedIn, hook-first for TikTok—so you’re not pasting the same text everywhere.
 
-We built it because repurposing is the highest-leverage work creators do, but doing it by hand doesn’t scale. One video should become a week of content, not a single post. With Content Multiplier you get there in under a minute. Every block has a copy button; paste into Buffer, Hootsuite, or hit publish. No exports, no formatting.
+We built it because repurposing is the highest-leverage work creators do, but doing it by hand doesn’t scale. One video should become a week of content, not a single post. With TextFlow you get there in under a minute. Every block has a copy button; paste into Buffer, Hootsuite, or hit publish. No exports, no formatting.
 
 Try it free: 5 generations per month, no credit card. When you’re ready to go unlimited, Pro is $19/month. We’re a small team shipping for creators and marketers who want to post more without burning out. If that’s you, give it a spin and tell us what you’d want next.
 
@@ -47,13 +47,13 @@ Try it free: 5 generations per month, no credit card. When you’re ready to go 
 ---
 
 **Call-to-action**  
-Try it free → [your-domain.com](https://contentmultiplier.app)  
+Try it free → [your-domain.com](https://textflow.app)  
 Or: “Start multiplying your content — 5 free generations, no card required.”
 
 ---
 
 **Hashtags**  
-#ContentMultiplier #ContentRepurposing #AITools #CreatorEconomy #SaaS #ProductHunt #NoCode #SocialMediaMarketing #YouTube #TikTok
+#TextFlow #ContentRepurposing #AITools #CreatorEconomy #SaaS #ProductHunt #NoCode #SocialMediaMarketing #YouTube #TikTok
 
 ---
 
@@ -81,7 +81,7 @@ No more rewriting the same idea 10 times.
 Try free 👇  
 [your-link]
 
-#ContentMultiplier #CreatorTools #AITools #Productivity
+#TextFlow #CreatorTools #AITools #Productivity
 
 ---
 
@@ -91,7 +91,7 @@ Try free 👇
 
 Repurposing one video into a week of content usually takes hours.  
 
-We built Content Multiplier so it takes under a minute.  
+We built TextFlow so it takes under a minute.  
 
 Paste a video link → get platform-ready copy for Twitter, LinkedIn, TikTok, and a blog summary. AI handles tone and length so you stay consistent everywhere.  
 
@@ -115,7 +115,7 @@ All in under 60 seconds.
 
 Link in bio to try free 🚀  
 
-#ContentMultiplier #ContentCreator #SocialMediaTips #AITools #ProductivityHack
+#TextFlow #ContentCreator #SocialMediaTips #AITools #ProductivityHack
 
 ---
 
@@ -126,7 +126,7 @@ Link in bio to try free 🚀
 You: spending an hour turning a YouTube video into threads and LinkedIn posts  
 Us: paste link, get 19+ posts in one click  
 
-Content Multiplier. AI does the repurposing. You hit publish.  
+TextFlow. AI does the repurposing. You hit publish.  
 
 Free to start 👇  
 [your-link]
@@ -143,7 +143,7 @@ One video → a week of content.
 
 No extra hires. No extra hours.  
 
-Content Multiplier turns a single YouTube or TikTok link into Twitter threads, LinkedIn posts, TikTok ideas, and a blog summary. Copy, paste, schedule.  
+TextFlow turns a single YouTube or TikTok link into Twitter threads, LinkedIn posts, TikTok ideas, and a blog summary. Copy, paste, schedule.  
 
 Built for creators and marketing teams who ship daily.  
 

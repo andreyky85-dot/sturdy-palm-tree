@@ -1,0 +1,46 @@
+# Сборка и тесты без реальных ключей: подставляются безопасные заглушки только для компиляции Next.js.
+# OpenAI, Stripe, Postgres, Upstash в CI не используются.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      NEXTAUTH_SECRET: ci-build-placeholder-secret-at-least-32-chars-long
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      GOOGLE_CLIENT_ID: ci-placeholder-google-client-id-value
+      GOOGLE_CLIENT_SECRET: ci-placeholder-google-client-secret-value
+      BILLING_ENABLED: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Env report (информативно, без значений секретов)
+        run: node scripts/check-env.mjs
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test
+
+      - name: Production build
+        run: npm run build

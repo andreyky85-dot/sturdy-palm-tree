@@ -9,7 +9,8 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white px-4 py-24 sm:py-32">
       <div className="mx-auto max-w-4xl text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">TextFlow</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
           Превратите один текст в десятки идей для постов.
         </h1>
         <p className="mt-6 text-lg text-slate-600 sm:text-xl">

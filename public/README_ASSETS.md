@@ -1,6 +1,14 @@
-# Assets for Content Multiplier
+# Assets for TextFlow
 
-## og.png (превью в соцсетях)
+## Автогенерация (рекомендуется)
+
+```bash
+npm run build-assets
+```
+
+Создаёт `public/og.png` (1200×630) и `app/icon.png` (favicon через App Router).
+
+## og.png (превью в соцсетях) — вручную
 
 - **Нужный размер:** 1200×630 px.
 - Если картинка уже лежит в этой папке как `og.png`, приведите её к размеру одной командой:

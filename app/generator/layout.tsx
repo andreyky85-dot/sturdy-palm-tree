@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Generate content",
+  title: "Генератор",
   description:
-    "Paste a YouTube video URL and get 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary.",
+    "Вставьте текст или ссылку на YouTube — получите идеи постов для соцсетей и конспект.",
 };
 
-export default function GeneratorLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
+export default function GeneratorLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }

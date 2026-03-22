@@ -1,7 +1,117 @@
+import OpenAI from "openai";
+import { z } from "zod";
 import type { GenerateResult } from "@/components/generator/ResultsCards";
 
-// Универсальный учебный генератор: не вызывает OpenAI, а сам собирает тексты под любую тему.
+const generateResultSchema = z.object({
+  twitter_posts: z.array(z.string()),
+  linkedin_posts: z.array(z.string()),
+  tiktok_ideas: z.array(z.string()),
+  telegram_posts: z.array(z.string()),
+  titles: z.array(z.string()),
+  blog_summary: z.string(),
+});
+
+/**
+ * Приводит ответ модели к фиксированным размерам массивов, ожидаемым UI (карточки с фиксированными заголовками).
+ * Лишнее обрезаем, нехватку добиваем нейтральными строками — стабильнее, чем падение рендера.
+ */
+function normalizeGenerateResult(raw: z.infer<typeof generateResultSchema>): GenerateResult {
+  const pad = (items: string[], target: number, filler: string) => {
+    const next = items.map((s) => s.trim()).filter(Boolean);
+    while (next.length < target) {
+      next.push(filler);
+    }
+    return next.slice(0, target);
+  };
+
+  return {
+    twitter_posts: pad(raw.twitter_posts, 10, "Дополнительная идея поста по теме исходного текста."),
+    linkedin_posts: pad(raw.linkedin_posts, 5, "Короткий экспертный пост по мотивам исходного материала."),
+    tiktok_ideas: pad(raw.tiktok_ideas, 3, "Идея для короткого вертикального видео по теме текста."),
+    telegram_posts: pad(raw.telegram_posts, 3, "Пост для Telegram-канала на основе исходного текста."),
+    titles: pad(raw.titles, 5, "Заголовок по теме материала"),
+    blog_summary:
+      raw.blog_summary.trim().slice(0, 12000) ||
+      "Краткое резюме: перескажите исходный текст своими словами в 2–3 абзацах.",
+  };
+}
+
+async function generateWithOpenAI(transcript: string): Promise<GenerateResult | null> {
+  const key = process.env.OPENAI_API_KEY?.trim();
+  if (!key) {
+    return null;
+  }
+
+  const model = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const client = new OpenAI({ apiKey: key });
+  const excerpt = transcript.slice(0, 28_000);
+
+  const system =
+    "Ты редактор контента для соцсетей. Отвечай только одним JSON-объектом без markdown и пояснений. Язык выхода: русский.";
+
+  const user = `Проанализируй текст ниже и верни JSON со строго такими ключами:
+twitter_posts (массив из 10 коротких твитов/постов X),
+linkedin_posts (5 развёрнутых постов),
+tiktok_ideas (3 идеи сценария короткого видео),
+telegram_posts (3 поста для Telegram),
+titles (5 цепляющих заголовков),
+blog_summary (один связный абзац-конспект).
+
+Текст:
+---
+${excerpt}
+---`;
+
+  try {
+    const completion = await client.chat.completions.create({
+      model,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user },
+      ],
+      temperature: 0.6,
+      max_tokens: 4096,
+    });
+
+    const text = completion.choices[0]?.message?.content;
+    if (!text) {
+      return null;
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      console.error("[openai] JSON parse failed");
+      return null;
+    }
+
+    const safe = generateResultSchema.safeParse(parsed);
+    if (!safe.success) {
+      console.error("[openai] schema mismatch", safe.error.flatten());
+      return null;
+    }
+
+    return normalizeGenerateResult(safe.data);
+  } catch (err) {
+    console.error("[openai] API error", err);
+    return null;
+  }
+}
+
+/**
+ * Основной вход: при наличии OPENAI_API_KEY вызывается API OpenAI; иначе — детерминированный шаблонный режим (локальная разработка без ключа).
+ */
 export async function generateContentFromTranscript(transcript: string): Promise<GenerateResult> {
+  const fromApi = await generateWithOpenAI(transcript);
+  if (fromApi) {
+    return fromApi;
+  }
+  return buildFallbackFromTranscript(transcript);
+}
+
+function buildFallbackFromTranscript(transcript: string): GenerateResult {
   const short = transcript.slice(0, 140).trim() || "эта тема";
   const topic = short.length > 0 ? short : "эта тема";
 
@@ -15,7 +125,7 @@ export async function generateContentFromTranscript(transcript: string): Promise
     `Оформите "${topic}" в формат “3 коротких инсайта”: по одному предложению на каждый пункт.`,
     `Соберите 3 частых вопроса про "${topic}" и ответьте на них в одном посте. Формат Q&A читается легко.`,
     `Приведите один реальный пример по теме "${topic}" вместо общих фраз. Конкретика всегда выигрывает.`,
-    `В конце поста по теме "${topic}" задайте простой вопрос аудитории — это даёт идеи для следующих публикаций.`
+    `В конце поста по теме "${topic}" задайте простой вопрос аудитории — это даёт идеи для следующих публикаций.`,
   ];
 
   const linkedin_posts = [
@@ -56,19 +166,19 @@ export async function generateContentFromTranscript(transcript: string): Promise
 
 Честный формат “вот что я понял на своём опыте, вот что пока не до конца ясно” часто вызывает больше доверия, чем безупречные, но оторванные от реальности тексты.
 
-Главное — искренность, понятная структура и уважение к читателю.`
+Главное — искренность, понятная структура и уважение к читателю.`,
   ];
 
   const tiktok_ideas = [
     `Снимите ролик “3 простых мысли про ${topic}”: по одному тезису на каждый кадр, добавьте крупные субтитры.`,
     `Запишите формат “миф и как на самом деле” по теме ${topic}: сначала популярное заблуждение, затем ваше объяснение в одном предложении.`,
-    `Сделайте видео “3 ошибки новичков в теме ${topic}”: коротко назовите ошибку и тут же покажите, как делать правильно.`
+    `Сделайте видео “3 ошибки новичков в теме ${topic}”: коротко назовите ошибку и тут же покажите, как делать правильно.`,
   ];
 
   const telegram_posts = [
     `Сделайте разбор по теме "${topic}". Коротко опишите контекст, затем по пунктам перечислите 2–3 ключевые мысли и завершите понятным выводом или рекомендацией.`,
     `Опишите типичную ситуацию, связанную с "${topic}": что обычно происходит, какие возникают сложности и к чему это приводит. Далее предложите один–два варианта, как можно подойти к решению.`,
-    `Подготовьте небольшой образовательный пост по теме "${topic}": сформулируйте три практических совета, каждый отдельной строкой, и добавьте приглашение задать вопросы в комментариях.`
+    `Подготовьте небольшой образовательный пост по теме "${topic}": сформулируйте три практических совета, каждый отдельной строкой, и добавьте приглашение задать вопросы в комментариях.`,
   ];
 
   const titles = [
@@ -76,7 +186,7 @@ export async function generateContentFromTranscript(transcript: string): Promise
     `Как подойти к теме "${topic}" без лишней сложности`,
     `Типичные ошибки в теме "${topic}" и как их избежать`,
     `"${topic}": с чего начать, если вы только планируете`,
-    `Почему тема "${topic}" важна именно сейчас`
+    `Почему тема "${topic}" важна именно сейчас`,
   ];
 
   const blog_summary = `В этом тексте тема "${topic}" разбирается простым языком и с привязкой к практике. 

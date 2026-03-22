@@ -1,4 +1,4 @@
-# Content Multiplier — оба: локальный запуск и деплой на Vercel
+# TextFlow — оба: локальный запуск и деплой на Vercel
 # Запуск: .\scripts\run-both.ps1
 
 $ErrorActionPreference = "Stop"

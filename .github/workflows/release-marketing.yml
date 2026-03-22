@@ -1,0 +1,59 @@
+# Релиз по git-тегу v*.*.*: GitHub Release + ZIP с черновиками (X / LinkedIn / Telegram).
+# Перед тегом обновите CHANGELOG.md — секция ## [x.y.z] попадёт в описание релиза и в посты.
+#
+# Настройка репозитория (опционально):
+#   Settings → Variables → MARKETING_SITE_URL = https://ваш-домен (иначе https://textflow.app)
+
+name: Release & marketing bundle
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Parse tag → semver
+        id: meta
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Generate marketing bundle & release notes
+        env:
+          SITE_URL: ${{ vars.MARKETING_SITE_URL }}
+        run: node scripts/generate-marketing-bundle.mjs "${{ steps.meta.outputs.version }}"
+
+      - name: Zip marketing drafts
+        run: |
+          VERSION="${{ steps.meta.outputs.version }}"
+          cd marketing/bundle
+          zip -r "../../textflow-marketing-${VERSION}.zip" "${VERSION}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: TextFlow ${{ steps.meta.outputs.tag }}
+          body_path: release_notes.md
+          files: textflow-marketing-*.zip
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

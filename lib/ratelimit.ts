@@ -20,7 +20,7 @@ function getRatelimit(): Ratelimit | null {
   ratelimit = new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(RATE_LIMIT_REQUESTS, `${RATE_LIMIT_WINDOW_SEC} s`),
-    prefix: "content-multiplier:generate",
+    prefix: "textflow:generate",
   });
   return ratelimit;
 }

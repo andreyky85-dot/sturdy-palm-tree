@@ -1,4 +1,4 @@
-// Content Multiplier — схема БД для пользователей, подписок и лимитов
+// TextFlow — схема БД: пользователи, OAuth-сессии, учёт генераций, поля под будущий Stripe
 generator client {
   provider = "prisma-client-js"
 }

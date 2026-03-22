@@ -112,11 +112,11 @@ export default function GeneratorPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Generation failed");
+        setError(data.error ?? "Не удалось сгенерировать");
         if (data.used != null && data.limit != null) {
-          setError(`Monthly limit reached (${data.used}/${data.limit}). Upgrade to Pro for unlimited.`);
+          setError(`Достигнут месячный лимит (${data.used}/${data.limit}).`);
         } else if (res.status === 429 && data.retryAfter) {
-          setError(`Too many requests. Try again in ${data.retryAfter} seconds.`);
+          setError(`Слишком много запросов. Повторите через ${data.retryAfter} с.`);
         }
         return;
       }
@@ -128,7 +128,7 @@ export default function GeneratorPage() {
       const historyVideoUrl = useVideoUrl ? trimmedUrl : null;
       saveHistory(historyInput, data, historyVideoUrl);
     } catch {
-      setError("Network error. Try again.");
+      setError("Ошибка сети. Попробуйте ещё раз.");
     } finally {
       setLoading(false);
     }

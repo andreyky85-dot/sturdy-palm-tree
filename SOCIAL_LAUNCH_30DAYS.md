@@ -1,4 +1,4 @@
-# Content Multiplier — 30-Day Launch Campaign
+# TextFlow — 30-Day Launch Campaign
 
 **10 ready-to-post snippets + full 30-day content calendar.**  
 Copy-paste ready. Energetic, startup-friendly, viral-ready.  
@@ -21,7 +21,7 @@ Stop rewriting the same idea for every platform. Paste a link → get Twitter th
 Try 5 generations free 👇  
 [your-link]
 
-#ContentMultiplier #CreatorTools #AITools #Productivity
+#TextFlow #CreatorTools #AITools #Productivity
 
 ---
 
@@ -52,7 +52,7 @@ Your content strategy in 2025:
 
 We’re not kidding. Link in bio to try it 🎬
 
-#ContentMultiplier #ContentCreator #SocialMediaTips #ViralContent
+#TextFlow #ContentCreator #SocialMediaTips #ViralContent
 
 ---
 
@@ -64,7 +64,7 @@ Did you know? The top creators don’t create 10x more — they repurpose 1 piec
 
 One YouTube video → 10 Twitter threads, 5 LinkedIn posts, 3 TikTok ideas, 1 blog. Same message, every platform. In under a minute.
 
-That’s Content Multiplier. Try free 👇  
+That’s TextFlow. Try free 👇  
 [your-link]
 
 #CreatorEconomy #ContentRepurposing #AITools
@@ -77,7 +77,7 @@ That’s Content Multiplier. Try free 👇
 
 You don’t need more hours. You need one video to become a week of content.
 
-Content Multiplier: paste a YouTube or TikTok link, get platform-ready copy for Twitter, LinkedIn, TikTok, and a blog summary. Copy, paste, schedule. Done.
+TextFlow: paste a YouTube or TikTok link, get platform-ready copy for Twitter, LinkedIn, TikTok, and a blog summary. Copy, paste, schedule. Done.
 
 Free tier to start. Pro when you’re ready to go unlimited.
 
@@ -95,7 +95,7 @@ Retweet if you’ve ever spent an hour turning one video into threads and Linked
 
 (There’s a faster way. One link → 19+ posts. Link in bio.)
 
-#ContentMultiplier #CreatorLife #AITools
+#TextFlow #CreatorLife #AITools
 
 ---
 
@@ -114,7 +114,7 @@ One link. One click. No rewriting.
 
 Link in bio to try free ✨
 
-#ContentMultiplier #SocialMedia #ContentCreator #AITools
+#TextFlow #SocialMedia #ContentCreator #AITools
 
 ---
 
@@ -124,7 +124,7 @@ Link in bio to try free ✨
 
 POV: You paste one video link and get 19 posts back.
 
-That’s not a dream. That’s Content Multiplier. 🧵
+That’s not a dream. That’s TextFlow. 🧵
 
 Try it → [your-link]
 
@@ -138,7 +138,7 @@ Try it → [your-link]
 
 Did you know? One long-form video can become 20+ pieces of content without you rewriting a single line.
 
-Content Multiplier uses AI to turn your transcript into Twitter threads, LinkedIn posts, TikTok hooks, and a blog summary — each tuned for its platform. Same story, right format everywhere.
+TextFlow uses AI to turn your transcript into Twitter threads, LinkedIn posts, TikTok hooks, and a blog summary — each tuned for its platform. Same story, right format everywhere.
 
 Free to try. No card required.
 
@@ -154,9 +154,9 @@ Free to try. No card required.
 
 Comment with your biggest content bottleneck 👇
 
-(Mine used to be: one video, 10 platforms, zero time. We built Content Multiplier to fix that. One link → 19+ posts. Try free: [your-link])
+(Mine used to be: one video, 10 platforms, zero time. We built TextFlow to fix that. One link → 19+ posts. Try free: [your-link])
 
-#ContentMultiplier #CreatorEconomy #AITools #Productivity
+#TextFlow #CreatorEconomy #AITools #Productivity
 
 ---
 
@@ -171,7 +171,7 @@ Comment with your biggest content bottleneck 👇
 **Day 1 — Twitter/X**  
 **Post:** One video. 19+ posts. Under 60 seconds. 🚀 Stop rewriting for every platform. Paste a link → get Twitter threads, LinkedIn posts, TikTok ideas + a blog summary.  
 **CTA:** Try 5 generations free 👇 [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorTools #AITools #Productivity
+**Hashtags:** #TextFlow #CreatorTools #AITools #Productivity
 
 ---
 
@@ -185,13 +185,13 @@ Comment with your biggest content bottleneck 👇
 **Day 3 — Instagram**  
 **Post:** Your content strategy in 2025: ❌ One video = one post. ✅ One video = 19+ posts in one click. We’re not kidding.  
 **CTA:** Link in bio to try it 🎬  
-**Hashtags:** #ContentMultiplier #ContentCreator #SocialMediaTips #ViralContent
+**Hashtags:** #TextFlow #ContentCreator #SocialMediaTips #ViralContent
 
 ---
 
 **Day 4 — Twitter/X**  
 **Post:** Did you know? Top creators repurpose 1 piece into 10. One YouTube video → 10 Twitter threads, 5 LinkedIn posts, 3 TikTok ideas, 1 blog. In under a minute.  
-**CTA:** That’s Content Multiplier. Try free 👇 [your-link]  
+**CTA:** That’s TextFlow. Try free 👇 [your-link]  
 **Hashtags:** #CreatorEconomy #ContentRepurposing #AITools
 
 ---
@@ -206,19 +206,19 @@ Comment with your biggest content bottleneck 👇
 **Day 6 — Twitter/X**  
 **Post:** Retweet if you’ve ever spent an hour turning one video into threads and LinkedIn posts. 🙋 (There’s a faster way. One link → 19+ posts.)  
 **CTA:** Link in bio / [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorLife #AITools
+**Hashtags:** #TextFlow #CreatorLife #AITools
 
 ---
 
 **Day 7 — Instagram**  
 **Post:** New: turn any YouTube or TikTok video into ready-to-post content. → 10 Twitter → 5 LinkedIn → 3 TikTok ideas → 1 blog. One link. One click.  
 **CTA:** Link in bio to try free ✨  
-**Hashtags:** #ContentMultiplier #SocialMedia #ContentCreator #AITools
+**Hashtags:** #TextFlow #SocialMedia #ContentCreator #AITools
 
 ---
 
 **Day 8 — Twitter/X**  
-**Post:** POV: You paste one video link and get 19 posts back. That’s not a dream. That’s Content Multiplier. 🧵  
+**Post:** POV: You paste one video link and get 19 posts back. That’s not a dream. That’s TextFlow. 🧵  
 **CTA:** Try it → [your-link]  
 **Hashtags:** #BuildInPublic #CreatorTools #ProductivityHack
 
@@ -232,14 +232,14 @@ Comment with your biggest content bottleneck 👇
 ---
 
 **Day 10 — Twitter/X**  
-**Post:** Comment with your biggest content bottleneck 👇 (Ours was: one video, 10 platforms, zero time. We built Content Multiplier. One link → 19+ posts.)  
+**Post:** Comment with your biggest content bottleneck 👇 (Ours was: one video, 10 platforms, zero time. We built TextFlow. One link → 19+ posts.)  
 **CTA:** Try free: [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorEconomy #AITools #Productivity
+**Hashtags:** #TextFlow #CreatorEconomy #AITools #Productivity
 
 ---
 
 **Day 11 — LinkedIn**  
-**Post:** Why repurposing beats creating from scratch: one piece of IP, many formats. Content Multiplier turns one video into 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. Same story, right format everywhere.  
+**Post:** Why repurposing beats creating from scratch: one piece of IP, many formats. TextFlow turns one video into 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. Same story, right format everywhere.  
 **CTA:** Try the free tier → [your-link]  
 **Hashtags:** #ContentStrategy #Productivity #SaaS #Marketing
 
@@ -248,19 +248,19 @@ Comment with your biggest content bottleneck 👇
 **Day 12 — Instagram**  
 **Post:** The creators who post every day aren’t filming 30 videos. They’re turning 1 into 30. One link. Ten Twitter posts. Five LinkedIn. Three TikTok ideas. One blog.  
 **CTA:** Link in bio to try 🚀  
-**Hashtags:** #ContentMultiplier #CreatorTips #ContentRepurposing #Viral
+**Hashtags:** #TextFlow #CreatorTips #ContentRepurposing #Viral
 
 ---
 
 **Day 13 — Twitter/X**  
 **Post:** Hot take: If you’re not repurposing, you’re leaving 90% of your content’s reach on the table. One video → 19+ posts. One tool. One minute.  
 **CTA:** Try free 👇 [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorEconomy #GrowthHack
+**Hashtags:** #TextFlow #CreatorEconomy #GrowthHack
 
 ---
 
 **Day 14 — LinkedIn**  
-**Post:** Scale your content without scaling your team. Content Multiplier: paste a video link, get platform-optimized copy for Twitter, LinkedIn, TikTok, and a blog. Built for creators and marketing teams who ship daily.  
+**Post:** Scale your content without scaling your team. TextFlow: paste a video link, get platform-optimized copy for Twitter, LinkedIn, TikTok, and a blog. Built for creators and marketing teams who ship daily.  
 **CTA:** Start free → [your-link]  
 **Hashtags:** #Marketing #ContentMarketing #SaaS #Productivity
 
@@ -269,26 +269,26 @@ Comment with your biggest content bottleneck 👇
 **Day 15 — Twitter/X**  
 **Post:** “I don’t have time to post everywhere.” Same. So we built a thing: paste one link, get 19 posts. Twitter, LinkedIn, TikTok, blog. You just copy and hit publish.  
 **CTA:** 5 free generations → [your-link]  
-**Hashtags:** #ContentMultiplier #AITools #Productivity #CreatorTools
+**Hashtags:** #TextFlow #AITools #Productivity #CreatorTools
 
 ---
 
 **Day 16 — Instagram**  
 **Post:** One video. Four platforms. Zero rewriting. Paste your YouTube or TikTok link and get 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. All in one click.  
 **CTA:** Link in bio to try free ✨  
-**Hashtags:** #ContentMultiplier #SocialMedia #ContentCreator #AITools
+**Hashtags:** #TextFlow #SocialMedia #ContentCreator #AITools
 
 ---
 
 **Day 17 — Twitter/X**  
 **Post:** Tag a creator who posts on 5 platforms and still has a life. (Or send them this: one link → 19 posts. [your-link])  
-**CTA:** Try Content Multiplier free  
-**Hashtags:** #ContentMultiplier #CreatorEconomy #AITools
+**CTA:** Try TextFlow free  
+**Hashtags:** #TextFlow #CreatorEconomy #AITools
 
 ---
 
 **Day 18 — LinkedIn**  
-**Post:** The best content strategy isn’t more content — it’s one strong piece, repurposed everywhere. Content Multiplier turns one video into Twitter threads, LinkedIn posts, TikTok ideas, and a blog. AI handles tone and length.  
+**Post:** The best content strategy isn’t more content — it’s one strong piece, repurposed everywhere. TextFlow turns one video into Twitter threads, LinkedIn posts, TikTok ideas, and a blog. AI handles tone and length.  
 **CTA:** Try it free → [your-link]  
 **Hashtags:** #ContentStrategy #Marketing #AITools #SaaS
 
@@ -297,27 +297,27 @@ Comment with your biggest content bottleneck 👇
 **Day 19 — Twitter/X**  
 **Post:** We turned “paste link → get 19 posts” into a product. No cap. Try 5 generations free and see why creators are switching.  
 **CTA:** [your-link]  
-**Hashtags:** #ContentMultiplier #BuildInPublic #ProductLaunch #AITools
+**Hashtags:** #TextFlow #BuildInPublic #ProductLaunch #AITools
 
 ---
 
 **Day 20 — Instagram**  
 **Post:** Stop choosing between YouTube and TikTok and Twitter and LinkedIn. One video. All of them. One click.  
 **CTA:** Link in bio 🎬  
-**Hashtags:** #ContentMultiplier #MultiPlatform #ContentCreator #ViralContent
+**Hashtags:** #TextFlow #MultiPlatform #ContentCreator #ViralContent
 
 ---
 
 **Day 21 — Twitter/X**  
 **Post:** Product Hunt energy: Ship something that saves people 10 hours a week. For us it’s one link → 19+ posts. No rewriting. No formatting. Just copy and ship.  
 **CTA:** Try free 👇 [your-link]  
-**Hashtags:** #ProductHunt #ContentMultiplier #SaaS #CreatorTools
+**Hashtags:** #ProductHunt #TextFlow #SaaS #CreatorTools
 
 ---
 
 **Day 22 — LinkedIn**  
 **Post:** “We need more content” doesn’t always mean “we need more production.” Often it means “we need to repurpose what we have.” One video can become 20+ pieces with the right workflow. We built ours — and opened a free tier so you can try it.  
-**CTA:** Content Multiplier → [your-link]  
+**CTA:** TextFlow → [your-link]  
 **Hashtags:** #ContentStrategy #Marketing #Productivity #SaaS
 
 ---
@@ -325,26 +325,26 @@ Comment with your biggest content bottleneck 👇
 **Day 23 — Twitter/X**  
 **Post:** Real talk: the bottleneck isn’t ideas. It’s turning one idea into 10 posts. We fixed that. One video link. Ten Twitter posts. Five LinkedIn. Three TikTok ideas. One blog. You’re welcome.  
 **CTA:** Try free → [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorEconomy #AITools #Productivity
+**Hashtags:** #TextFlow #CreatorEconomy #AITools #Productivity
 
 ---
 
 **Day 24 — Instagram**  
 **Post:** How to get a week of content from one video: 1. Record one good video. 2. Paste the link. 3. Get 19 posts. 4. Copy, schedule, done.  
 **CTA:** Link in bio to try the tool ✨  
-**Hashtags:** #ContentMultiplier #ContentCreator #SocialMediaTips #AITools
+**Hashtags:** #TextFlow #ContentCreator #SocialMediaTips #AITools
 
 ---
 
 **Day 25 — Twitter/X**  
 **Post:** Retweet if you’d rather paste one link and get 19 posts than rewrite the same thing for every platform.  
 **CTA:** That’s what we built. [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorTools #Productivity
+**Hashtags:** #TextFlow #CreatorTools #Productivity
 
 ---
 
 **Day 26 — LinkedIn**  
-**Post:** From one webinar or demo to a month of social content: possible. Content Multiplier turns video transcripts into Twitter threads, LinkedIn posts, TikTok ideas, and blog summaries. Same message, every channel.  
+**Post:** From one webinar or demo to a month of social content: possible. TextFlow turns video transcripts into Twitter threads, LinkedIn posts, TikTok ideas, and blog summaries. Same message, every channel.  
 **CTA:** Free tier available → [your-link]  
 **Hashtags:** #ContentRepurposing #MarketingStrategy #SaaS #AITools
 
@@ -352,27 +352,27 @@ Comment with your biggest content bottleneck 👇
 
 **Day 27 — Twitter/X**  
 **Post:** Did you know? One 10-min video can become 10 Twitter threads, 5 LinkedIn posts, 3 TikTok hooks, and 1 blog. We do it in under a minute. You just paste the link.  
-**CTA:** Try Content Multiplier free 👇 [your-link]  
-**Hashtags:** #ContentMultiplier #DidYouKnow #CreatorEconomy #AITools
+**CTA:** Try TextFlow free 👇 [your-link]  
+**Hashtags:** #TextFlow #DidYouKnow #CreatorEconomy #AITools
 
 ---
 
 **Day 28 — Instagram**  
 **Post:** Your next video shouldn’t live in one place. It should become threads, LinkedIn posts, TikTok ideas, and a blog. One link. One click.  
 **CTA:** Link in bio to try 🚀  
-**Hashtags:** #ContentMultiplier #ContentStrategy #SocialMedia #ViralContent
+**Hashtags:** #TextFlow #ContentStrategy #SocialMedia #ViralContent
 
 ---
 
 **Day 29 — Twitter/X**  
-**Post:** Month-end reminder: you don’t need to create 30 pieces. You need to create 1 and repurpose it 30 ways. Content Multiplier does the repurposing. You hit publish.  
+**Post:** Month-end reminder: you don’t need to create 30 pieces. You need to create 1 and repurpose it 30 ways. TextFlow does the repurposing. You hit publish.  
 **CTA:** Try free → [your-link]  
-**Hashtags:** #ContentMultiplier #CreatorTips #Productivity #AITools
+**Hashtags:** #TextFlow #CreatorTips #Productivity #AITools
 
 ---
 
 **Day 30 — LinkedIn**  
-**Post:** 30 days of content from one idea: that’s the goal. Content Multiplier turns one video into 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. Built for creators and teams who want to post more without burning out.  
+**Post:** 30 days of content from one idea: that’s the goal. TextFlow turns one video into 10 Twitter posts, 5 LinkedIn posts, 3 TikTok ideas, and a blog summary. Built for creators and teams who want to post more without burning out.  
 **CTA:** Start with 5 free generations → [your-link]  
 **Hashtags:** #ContentStrategy #Marketing #SaaS #CreatorEconomy #ProductLaunch
 

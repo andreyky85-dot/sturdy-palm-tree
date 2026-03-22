@@ -9,6 +9,11 @@ out
 build
 dist
 
+# Локальная генерация релиза (в CI артефакты не коммитятся)
+marketing/bundle/
+release_notes.md
+textflow-marketing-*.zip
+
 # Env (секреты не коммитить)
 .env
 .env.local
@@ -32,3 +37,11 @@ prisma/*.db-journal
 # OS
 .DS_Store
 Thumbs.db
+
+# Playwright: сохранённая сессия после e2e/auth.setup.ts
+e2e/.auth/
+test-results/
+playwright-report/
+
+# Личные заметки (не в репозиторий)
+Шпаргалка*.txt
