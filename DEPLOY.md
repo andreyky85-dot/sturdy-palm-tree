@@ -29,7 +29,15 @@ npm run dev
 
 2. **Vercel:** зайдите на [vercel.com](https://vercel.com) → **Add New** → **Project** → выберите репозиторий → **Import**.
 
-3. **База (до первого успешного деплоя с миграциями):** вкладка **Storage** → **Create Database** → **Postgres** → **Connect to Project**. В Environment Variables появится **`DATABASE_URL`** (или задайте свою строку внешнего Postgres вручную). Без рабочего `DATABASE_URL` шаг `prisma migrate deploy` на сборке завершится ошибкой.
+3. **База (до первого успешного деплоя с миграциями):** вкладка **Storage** → **Create Database** → **Postgres** → **Connect to Project**.
+
+   **Если сборка пишет «не задана строка подключения»:** в списке переменных проекта иногда нет `DATABASE_URL` на этапе **Build**. Тогда вручную:
+   - откройте **Storage** → вашу базу → скопируйте **Connection string** (или блок из вкладки **.env**);
+   - **Settings** → **Environment Variables** → **Add** → имя **`DATABASE_URL`**, значение — скопированная строка (`postgres://...` или `postgresql://...`);
+   - отметьте **Production** (и при необходимости **Preview**);
+   - **Save** → **Deployments** → **Redeploy**.
+
+   Скрипт `scripts/vercel-build.mjs` также пробует `POSTGRES_PRISMA_URL`, `POSTGRES_URL` и другие типичные имена, если они реально попадают в env сборки.
 
 4. **Переменные (обязательный минимум):** **Settings** → **Environment Variables**:
    - `NEXTAUTH_URL` = **https://ваш-домен.vercel.app** (без слэша в конце; после кастомного домена обновите)

@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 /**
- * Сборка для Vercel: единая точка входа с нормализацией строки БД.
+ * Сборка для Vercel: нормализация строки БД перед Prisma и Next.
  *
- * Зачем: в дашборде Vercel Postgres часто создаёт POSTGRES_URL / POSTGRES_PRISMA_URL,
- * а Prisma в schema.prisma ожидает DATABASE_URL — без неё `prisma migrate deploy` падает с P1012.
- *
- * Как: копируем подходящую переменную в DATABASE_URL для дочерних процессов (generate, migrate, next build).
- *
- * Альтернатива: вручную продублировать DATABASE_URL в Settings → Environment Variables (Production).
+ * Проблема: Prisma требует DATABASE_URL; Vercel Storage может выставить POSTGRES_*,
+ * а иногда на этапе Build переменные из Storage вообще не попадают в окружение —
+ * тогда строку нужно добавить вручную в Project → Environment Variables.
  */
 
 import { spawnSync } from "child_process";
@@ -18,7 +15,6 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 
-/** Локально Next.js сам читает .env.local; для этого скрипта подмешиваем файл вручную (не перезаписываем уже заданный env). */
 function loadEnvLocal() {
   const p = path.join(root, ".env.local");
   if (!existsSync(p)) return;
@@ -44,19 +40,56 @@ function loadEnvLocal() {
 
 loadEnvLocal();
 
+function looksLikePostgresUrl(s) {
+  const t = String(s).trim().toLowerCase();
+  return t.startsWith("postgresql:") || t.startsWith("postgres:");
+}
+
+/**
+ * Порядок имён — от более подходящих для Prisma migrate к запасным.
+ * Neon / Supabase иногда дают свои имена; ищем и по ним.
+ */
+const URL_KEY_PRIORITY = [
+  "DATABASE_URL",
+  "POSTGRES_PRISMA_URL",
+  "POSTGRES_URL",
+  "PRISMA_DATABASE_URL",
+  "POSTGRES_URL_NON_POOLING",
+  "DATABASE_URL_UNPOOLED",
+  "NEON_DATABASE_URL",
+];
+
 function pickDatabaseUrl() {
-  const explicit = process.env.DATABASE_URL?.trim();
-  if (explicit) return explicit;
+  for (const key of URL_KEY_PRIORITY) {
+    const v = process.env[key]?.trim();
+    if (v && looksLikePostgresUrl(v)) {
+      return { url: v, source: key };
+    }
+  }
 
-  // Типичные имена при подключении Vercel Postgres / Neon из маркетплейса
-  const candidates = [
-    process.env.POSTGRES_PRISMA_URL,
-    process.env.POSTGRES_URL,
-    process.env.PRISMA_DATABASE_URL,
-  ].filter(Boolean);
+  for (const [key, val] of Object.entries(process.env)) {
+    if (!val?.trim()) continue;
+    if (!looksLikePostgresUrl(val)) continue;
+    if (
+      /POSTGRES|DATABASE|PRISMA|NEON|SUPABASE/i.test(key) &&
+      !/SUPABASE_ANON|SERVICE_ROLE|JWT/i.test(key)
+    ) {
+      return { url: val.trim(), source: key };
+    }
+  }
 
-  const found = candidates.find((s) => String(s).trim().length > 0);
-  return found ? String(found).trim() : "";
+  return { url: "", source: null };
+}
+
+/** В лог — только имена, без значений (секреты не светим). */
+function debugRelatedEnvKeys() {
+  return Object.keys(process.env)
+    .filter(
+      (k) =>
+        /POSTGRES|DATABASE|PRISMA|NEON|SUPABASE|SQL/i.test(k) &&
+        !/NEXT_PUBLIC|VERCEL_GIT|VERCEL_URL|VERCEL_ENV|VERCEL_REGION/i.test(k)
+    )
+    .sort();
 }
 
 function run(cmd, args, env) {
@@ -71,24 +104,36 @@ function run(cmd, args, env) {
   }
 }
 
-const dbUrl = pickDatabaseUrl();
+const { url: dbUrl, source } = pickDatabaseUrl();
+
 if (!dbUrl) {
+  const related = debugRelatedEnvKeys();
   console.error(
-    "\n[vercel-build] Ошибка: не задана строка подключения к PostgreSQL.\n" +
-      "  Добавьте в Vercel → Settings → Environment Variables (Production):\n" +
-      "    DATABASE_URL = строка из вашей БД (или подключите Vercel Postgres к проекту).\n" +
-      "  Если видите только POSTGRES_URL / POSTGRES_PRISMA_URL — либо скрипт подхватит их автоматически,\n" +
-      "  либо создайте переменную DATABASE_URL вручную с тем же значением.\n" +
-      "  Убедитесь, что переменная отмечена для окружения Production (галочки при создании).\n"
+    "\n[vercel-build] Нет строки подключения к PostgreSQL для Prisma migrate.\n"
   );
+  console.error(
+    "  Переменные в окружении со «похожими» именами (только имена, без значений):"
+  );
+  console.error(
+    related.length ? `  ${related.join(", ")}` : "  (нет — БД не видна на этапе Build)"
+  );
+  console.error(`
+  Что сделать в Vercel:
+  1) Project → Storage → ваша Postgres → скопируйте connection string (или вкладка .env).
+  2) Project → Settings → Environment Variables → Add:
+     Name: DATABASE_URL
+     Value: вставьте строку (начинается с postgres:// или postgresql://)
+     Environments: включите Production (и Preview, если нужно).
+  3) Если переменная помечена как доступная только в Runtime — для migrate на сборке
+     она недоступна; задайте DATABASE_URL явно для всех нужных сред / снимите ограничение.
+  4) Сохраните и сделайте Redeploy.
+`);
   process.exit(1);
 }
 
 const env = { ...process.env, DATABASE_URL: dbUrl };
-if (!process.env.DATABASE_URL?.trim()) {
-  console.log(
-    "[vercel-build] DATABASE_URL не был задан; используется резерв из POSTGRES_* / PRISMA_DATABASE_URL."
-  );
+if (source && source !== "DATABASE_URL") {
+  console.log(`[vercel-build] DATABASE_URL взят из переменной: ${source}`);
 }
 
 run("npx", ["prisma", "generate"], env);
